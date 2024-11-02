@@ -4,6 +4,8 @@ import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.me.jamesburt.nanogenmo.outputgeneration.CommandlineOutputGenerator;
+import uk.me.jamesburt.nanogenmo.outputgeneration.FileOutputGenerator;
+import uk.me.jamesburt.nanogenmo.outputgeneration.OutputGenerator;
 import uk.me.jamesburt.nanogenmo.textbuilders.BookBuilder;
 import uk.me.jamesburt.nanogenmo.textbuilders.ChapterBuilder;
 
@@ -21,8 +23,8 @@ public class NovelGeneratorConfiguration {
     }
 
     @Bean
-    public CommandlineOutputGenerator createOutputGenerator() {
-        return new CommandlineOutputGenerator();
+    public OutputGenerator createOutputGenerator() {
+        return new FileOutputGenerator();
     }
 
 }

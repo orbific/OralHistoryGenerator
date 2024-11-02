@@ -44,7 +44,8 @@ public class BookBuilder {
         this.aiClient = aiClient;
     }
 
-    public List<ChapterText> generateBook() {
+    // TODO this method is too long and needs refactoring
+    public void generateBook() {
 
         PromptTemplate promptTemplate = new PromptTemplate(generateOverview);
         Message m = promptTemplate.createMessage();
@@ -68,14 +69,25 @@ public class BookBuilder {
         List<ChapterText> rawOutput = new ArrayList<>();
         if(bookOverview!=null) {
             for(ChapterMetadata chapterMetadata : bookOverview.chapterMetadata()) {
-                rawOutput.add(chapterBuilder.generate(chapterMetadata));
+                logger.info("Generating opening text for chapter");
+                ChapterText chapterOpening = chapterBuilder.generate(chapterMetadata);
+                StringBuilder fullText = new StringBuilder(chapterOpening.text());
+                // TODO magic number here for approx characters in 3000 words
+                while(fullText.length()<21000) {
+                    logger.info("Making request for further chapter content");
+                    // TODO we need another prompt here to build on the previous info
+                    ChapterText continuedText = chapterBuilder.generate(chapterMetadata);
+                    fullText.append(continuedText.text());
+                }
+
+                ChapterText completeChapter = new ChapterText(chapterOpening.editorialOverview(), fullText.toString());
+                rawOutput.add(completeChapter);
             }
 
         }
         // TODO need a better way to link the chapters and titles
         outputGenerator.generate(bookOverview, rawOutput);
 
-        return rawOutput;
     }
 
 }
