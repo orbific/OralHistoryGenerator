@@ -21,6 +21,7 @@ import uk.me.jamesburt.nanogenmo.outputgeneration.OutputGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TODO set up a common text-builder interface
@@ -40,6 +41,13 @@ public class BookBuilder {
     @Value("classpath:/prompts/generate-synopsis.st")
     private Resource generateOverview;
 
+    @Value("${bookgenerator.chapterCount}")
+    private String chapterCount;
+
+    // TODO need to adjust this to be in words
+    @Value("${bookgenerator.charactersPerChapter}")
+    private String charactersPerChapter;
+
     public BookBuilder(OpenAiChatModel aiClient) {
         this.aiClient = aiClient;
     }
@@ -47,8 +55,12 @@ public class BookBuilder {
     // TODO this method is too long and needs refactoring
     public void generateBook() {
 
+        Map<String, Object> promptParameters = Map.of(
+                "chapterCount", chapterCount
+                );
+
         PromptTemplate promptTemplate = new PromptTemplate(generateOverview);
-        Message m = promptTemplate.createMessage();
+        Message m = promptTemplate.createMessage(promptParameters);
 
         var outputConverter = new BeanOutputConverter<>(BookMetadata.class);
         var jsonSchema = outputConverter.getJsonSchema();
@@ -72,8 +84,10 @@ public class BookBuilder {
                 logger.info("Generating opening text for chapter");
                 ChapterText chapterOpening = chapterBuilder.generate(chapterMetadata);
                 StringBuilder fullText = new StringBuilder(chapterOpening.text());
-                // TODO magic number here for approx characters in 3000 words
-                while(fullText.length()<21000) {
+                // TODO should be able to create the parameter as integer?
+                logger.info("Characters per chapter is "+charactersPerChapter);
+                Integer characterCount = Integer.valueOf(charactersPerChapter);
+                while(fullText.length()<characterCount) {
                     logger.info("Making request for further chapter content");
                     // TODO we need another prompt here to build on the previous info
                     ChapterText continuedText = chapterBuilder.generate(chapterMetadata);
@@ -85,7 +99,6 @@ public class BookBuilder {
             }
 
         }
-        // TODO need a better way to link the chapters and titles
         outputGenerator.generate(bookOverview, rawOutput);
 
     }

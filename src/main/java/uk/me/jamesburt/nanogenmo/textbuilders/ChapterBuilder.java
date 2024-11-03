@@ -30,6 +30,8 @@ public class ChapterBuilder {
     @Value("classpath:/prompts/generate-chapter.st")
     private Resource generateChapter;
 
+
+
     private final OpenAiChatModel chatModel;
 
     public ChapterBuilder(OpenAiChatModel chatModel) {
@@ -37,7 +39,10 @@ public class ChapterBuilder {
     }
 
     public ChapterText generate(ChapterMetadata chapterMetadata) {
-        Map<String, Object> promptParameters = Map.of("chapterTitle", chapterMetadata.chapterTitle(), "description", chapterMetadata.description());
+        Map<String, Object> promptParameters = Map.of(
+                "chapterTitle", chapterMetadata.chapterTitle(),
+                "description", chapterMetadata.description(
+                ));
         PromptTemplate promptTemplate = new PromptTemplate(generateChapter,promptParameters);
         Message m = promptTemplate.createMessage();
 
