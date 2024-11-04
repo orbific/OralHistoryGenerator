@@ -19,6 +19,9 @@ public class HtmlOutputGenerator implements OutputGenerator {
     private static final String fileName = "novel.html";
     @Override
     public void generate(BookMetadata metadata, List<ChapterText> outputChapters) {
+        if(outputChapters.size() != metadata.chapterMetadata().length) {
+            throw new RuntimeException("Metadata contains different number of chapters to the output text - stopping generation");
+        }
 
         try (FileWriter writer = new FileWriter(fileName)) {
 
@@ -43,7 +46,6 @@ public class HtmlOutputGenerator implements OutputGenerator {
     }
 
     /*
-     * TODO consider splitting out the text generation from the file generation
      * The file generation could be a default method on the interface.
      */
     protected String generateTextAsString(BookMetadata metadata, List<ChapterText> outputChapters) {
