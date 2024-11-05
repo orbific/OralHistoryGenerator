@@ -14,22 +14,10 @@ import uk.me.jamesburt.nanogenmo.textbuilders.BookBuilder;
 import java.util.List;
 
 @SpringBootApplication
-public class NovelGenerator implements CommandLineRunner {
-
-    private static final Logger logger = LoggerFactory.getLogger(NovelGenerator.class);
-
-    @Autowired
-    BookBuilder bookBuilder;
-
-
+public class NovelGenerator {
 
     public static void main(String[] args) {
         SpringApplication.run(NovelGenerator.class, args);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        logger.info("LAUNCHING MAIN APPLICATION");
-        bookBuilder.generateBook();
-    }
 }

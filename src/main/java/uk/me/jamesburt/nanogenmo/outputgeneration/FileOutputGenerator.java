@@ -10,7 +10,6 @@ import java.util.List;
 
 /**
  * This needs to be an interface with implementations of different output formats
- * TODO need to add some logging to show what this is doing
  */
 public class FileOutputGenerator implements OutputGenerator {
 
@@ -19,12 +18,14 @@ public class FileOutputGenerator implements OutputGenerator {
     private static final String fileName = "novel.txt";
     @Override
     public void generate(BookMetadata metadata, List<ChapterText> outputChapters) {
+        if(outputChapters.size() != metadata.chapterMetadata().length) {
+            throw new RuntimeException("Metadata contains different number of chapters to the output text - stopping generation");
+        }
 
         try (FileWriter writer = new FileWriter(fileName)) {
             writer.write("The Secret History of Rave");
             writer.write("\n\n\n");
 
-            // TODO fix structures to avoid this issue of assuming both items are the same length
             for(int i=0; i<metadata.chapterMetadata().length;i++) {
                 writer.write(metadata.chapterMetadata()[i].chapterTitle()+"\n\n\n");
                 writer.write(outputChapters.get(i).editorialOverview()+"\n\n\n");
