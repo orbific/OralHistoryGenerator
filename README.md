@@ -4,7 +4,7 @@ A project for NaNoGenMo to create a fictional book-length oral history using an 
 ## Journal
 
 ### 2024-11-04
-* **TODO** commit work so far
+* **TODO** Draft a blog post on what I've learned so far
 * **TODO** set up issues for the TODO features listed in this document
 * **TODO** fix the TODOs in my code
 * **TODO** move to focussing more on prompt analysis / making this more novel like
@@ -13,15 +13,15 @@ A project for NaNoGenMo to create a fictional book-length oral history using an 
 * **TODO** can I randomise elements to add to the prompts to make them more varied.
 * **TODO** Need to enforce consistency in the text
 * **TODO** Split the readme and this diary into separate files.
-* **TODO** There is a hardcoded chapter number in the synopsis prompt
 * **TODO** Start thinking about validation
 * **TODO** How to make this adjustable for more types of story - splitting topic from format
-* **TODO**: need to consider how to test this when it can produce text so fast
-* **TODO**: should be able to output text/HTML/PDF/ebook
-* **TODO**: Look at parameterising application properties such as the model to use
-* **TODO**: Add notes on how to run the application
-* **TODO**: Split out the chapterMetadata overview from an overall synopsis
-* **TODO**: Add some recurring characters, and possibly more of an over-arcing story
+* **TODO** need to consider how to test this when it can produce text so fast
+* **TODO** Add an ebook generator
+* **TODO** Look at parameterising application properties such as the model to use
+* **TODO** Add notes on how to run the application
+* **TODO** Split out the chapterMetadata overview from an overall synopsis
+* **TODO** Add some recurring characters, and possibly more of an over-arcing story
+* **TODO** Catch up my GenAI blog posts. (red notebook p5)
 
 ### 2024-11-03
 * Time: 1.25 hour, total 5 hours
@@ -29,6 +29,7 @@ A project for NaNoGenMo to create a fictional book-length oral history using an 
 * Checked the new HTML generator is working
 * Set up a basic PDF generator which looks fairly poor so far
 * Started work on a test harness, but need to figure out how to override the commandline runner, which launches when the spring context is set up.
+* [Added new commit to share work with other laptop](https://github.com/orbific/OralHistoryGenerator/commit/8d97fe0287f29e6cce9de3d163335acf85004fab)
 * **Total cost for the day**: 3c
 
 ### 2024-11-02
