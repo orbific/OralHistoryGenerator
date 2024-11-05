@@ -14,6 +14,7 @@ public class CommandlineOutputGenerator implements OutputGenerator {
 
     private static final Logger logger = LoggerFactory.getLogger(CommandlineOutputGenerator.class);
 
+
     @Override
     public void generate(BookMetadata metadata, List<ChapterText> outputChapters) {
 

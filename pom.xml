@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>uk.me.jamesburt</groupId>
-    <artifactId>helloworld-example</artifactId>
+    <artifactId>oral-history-generator</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -82,6 +82,10 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
         </dependency>
 
     </dependencies>
