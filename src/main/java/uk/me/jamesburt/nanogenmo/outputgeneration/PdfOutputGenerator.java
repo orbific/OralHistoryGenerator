@@ -5,7 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.me.jamesburt.nanogenmo.datastructures.BookMetadata;
-import uk.me.jamesburt.nanogenmo.datastructures.ChapterText;
+import uk.me.jamesburt.nanogenmo.datastructures.ChapterData;
+import uk.me.jamesburt.nanogenmo.datastructures.ChapterOutput;
 
 import java.io.*;
 import java.util.List;
@@ -24,7 +25,7 @@ public class PdfOutputGenerator implements OutputGenerator {
     }
 
     @Override
-    public void generate(BookMetadata metadata, List<ChapterText> outputChapters) {
+    public void generate(BookMetadata metadata, List<ChapterOutput> outputChapters) {
 
         String htmlContent = htmlOutputGenerator.generateTextAsString(metadata, outputChapters);
         try (OutputStream outputStream = new FileOutputStream(fileName)) {

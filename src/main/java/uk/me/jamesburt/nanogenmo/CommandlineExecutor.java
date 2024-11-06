@@ -15,7 +15,6 @@ public class CommandlineExecutor  implements CommandLineRunner {
     @Autowired
     BookBuilder bookBuilder;
 
-
     @Override
     public void run(String... args) throws Exception {
         logger.info("LAUNCHING BOOK GENERATION");

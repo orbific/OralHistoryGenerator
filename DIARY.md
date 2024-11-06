@@ -1,18 +1,41 @@
 # Journal
 
+## 2024-11-06
+* Time: 1 hour, total 7.75 hours
+* Going to start with synopsis and work down through chapter (checking for arc) through to individual accounts
+* Changing the prompt for the chapter headings seems to produce more interesting results.
+* Created a new prompt to generate a basic list of recurring characters
+* Refactored the chapter data objects so that there was a separation between metadata and output
+* Started changing the chapter generation to include a cast of recurring characters
+  * TODO - will later need to note what else characters have done earlier in the book
+    * this will require having a reference for all pieces of text involving the character
+    * which will therefore involve adding more structure to the chapter text 
+* TODO - consider generating the cast with reference to the chapters
+* TODO change the logs to make them easier to read
+* Tried generating a complete novel, but there was a loop in the code resending the same request
+* **Total cost for the day**: 11c
+
+## 2024-11-05
+* Time: 1 hour, total 6.75 hours
+* Working with the chapter prompts and wondering how to make the accounts sound more authentic
+* Started refactoring the code to break up the larger methods
+* Making a change to have the repeated calls to the chapter generation include the previous prompts
+* TODO - need to revisit the data structures being used as they are not helping.
+* **Total cost for the day**: <1c
+
 ## 2024-11-04
-* Time: 0.5 hour, total 5.5 hours
+* Time: 0.75 hour, total 5.75 hours
 * Moving the commandline executor to its own class, so it does not automatically run when the context is created for testing.
 * Added basic usage notes.
 * Mostly a day of tidying up and consolidating what I have so far.
 * **TODO** - this is getting complicated enough that I need to add testing
   * Interesting question - testing is not needed when the application is in context, but returning to it later makes it trickier to resume.
-* Commit: [Latest version]()
 * Created new issues
     * [Output needs to be more novel-like](https://github.com/orbific/OralHistoryGenerator/issues/1)
     * [Look to separate the themes from the mechanics of producing the history](https://github.com/orbific/OralHistoryGenerator/issues/2)
     * [Output of chapters needs to be consistent](https://github.com/orbific/OralHistoryGenerator/issues/3)
     * [Need to investigate output validations](https://github.com/orbific/OralHistoryGenerator/issues/4)
+* [Latest commit](https://github.com/orbific/OralHistoryGenerator/commit/6ffc9b9e6a32719abdd11d19ef7e3bf2167342a4)
 * **TODO** fix the TODOs in my code
 * **TODO** Catch up my GenAI blog posts. (red notebook p5)
 * **Total cost for the day**: 0c
