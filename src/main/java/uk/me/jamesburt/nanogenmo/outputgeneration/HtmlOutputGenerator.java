@@ -4,13 +4,14 @@ import org.jsoup.nodes.Entities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.me.jamesburt.nanogenmo.datastructures.BookMetadata;
-import uk.me.jamesburt.nanogenmo.datastructures.ChapterText;
+import uk.me.jamesburt.nanogenmo.datastructures.ChapterData;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import uk.me.jamesburt.nanogenmo.datastructures.ChapterOutput;
 
 public class HtmlOutputGenerator implements OutputGenerator {
 
@@ -18,7 +19,7 @@ public class HtmlOutputGenerator implements OutputGenerator {
 
     private static final String fileName = "novel.html";
     @Override
-    public void generate(BookMetadata metadata, List<ChapterText> outputChapters) {
+    public void generate(BookMetadata metadata, List<ChapterOutput> outputChapters) {
         if(outputChapters.size() != metadata.chapterMetadata().length) {
             throw new RuntimeException("Metadata contains different number of chapters to the output text - stopping generation");
         }
@@ -48,7 +49,7 @@ public class HtmlOutputGenerator implements OutputGenerator {
     /*
      * The file generation could be a default method on the interface.
      */
-    protected String generateTextAsString(BookMetadata metadata, List<ChapterText> outputChapters) {
+    protected String generateTextAsString(BookMetadata metadata, List<ChapterOutput> outputChapters) {
         Document doc = Document.createShell("");
         Element body = doc.body();
         body.appendElement("h1").text("The Secret History of Rave");
@@ -60,9 +61,9 @@ public class HtmlOutputGenerator implements OutputGenerator {
 
             // TODO this appends paragraphs within an italic tag
             Element italicHeader = body.appendElement("i");
-            appendTextLinesAsHtml(italicHeader, outputChapters.get(i).editorialOverview());
+            appendTextLinesAsHtml(italicHeader, outputChapters.get(i).getOverview());
 
-            appendTextLinesAsHtml(body, outputChapters.get(i).text());
+            appendTextLinesAsHtml(body, outputChapters.get(i).getOutputText());
         }
         return body.html();
     }

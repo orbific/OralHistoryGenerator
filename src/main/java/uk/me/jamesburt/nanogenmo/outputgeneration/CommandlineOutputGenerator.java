@@ -3,7 +3,8 @@ package uk.me.jamesburt.nanogenmo.outputgeneration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.me.jamesburt.nanogenmo.datastructures.BookMetadata;
-import uk.me.jamesburt.nanogenmo.datastructures.ChapterText;
+import uk.me.jamesburt.nanogenmo.datastructures.ChapterData;
+import uk.me.jamesburt.nanogenmo.datastructures.ChapterOutput;
 
 import java.util.List;
 
@@ -16,15 +17,15 @@ public class CommandlineOutputGenerator implements OutputGenerator {
 
 
     @Override
-    public void generate(BookMetadata metadata, List<ChapterText> outputChapters) {
+    public void generate(BookMetadata metadata, List<ChapterOutput> outputChapters) {
 
         System.out.println("\n*************\n");
 
         // TODO fix structures to avoid this issue of assuming both items are the same length
         for(int i=0; i<metadata.chapterMetadata().length;i++) {
             System.out.println(metadata.chapterMetadata()[i].chapterTitle()+"\n");
-            System.out.println(outputChapters.get(i).editorialOverview()+"\n");
-            System.out.println(outputChapters.get(i).text()+"\n");
+            System.out.println(outputChapters.get(i).getOverview()+"\n");
+            System.out.println(outputChapters.get(i).getOutputText()+"\n");
         }
     }
 }
