@@ -1,8 +1,11 @@
 # Journal
 
 ## 2024-11-07
-* Time: 1 hour, total 8.75 hours
-* Completed refactor of Bookbuilder class
+* Time: 0.5 hour, total 9.25 hours
+* Completed refactor of Bookbuilder class, created utility method to call LLM
+* Started working on a prompt for a single account
+* Created a test harness method to generate a single oral history account
+* [Commit for refactoring and changes to make chapter generation stateful](https://github.com/orbific/OralHistoryGenerator/commit/1d60b1487369d1f33d684646ab7d4e28dbe75e55)
 
 ## 2024-11-07
 * Time: 1 hour, total 8.75 hours
@@ -12,7 +15,6 @@
 * Fixed some of the TODOs in the project - notably making the chapter's title part of the ChapterOutput object
 * TODO: Produce a more structured chapter body, breaking it down into separate accounts that are JSON-structured
 * TODO: Set up co-pilot in my IDE
-* TODO: BookBuilder class needs to be refactored
 * Generation of a current version of the novel took about 11 minutes for 80,000 words, costing around 10c, but contained repeated text
 
 ## 2024-11-06

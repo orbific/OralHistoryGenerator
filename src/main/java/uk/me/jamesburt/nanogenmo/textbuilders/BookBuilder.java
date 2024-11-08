@@ -89,7 +89,7 @@ public class BookBuilder {
         Map<String, Object> promptParameters = Map.of(
                 "chapterCount", chapterCount
         );
-        return (BookMetadata) Utilities.generateLlmJsonResponse(aiClient, promptParameters, generateCast, BookMetadata.class);
+        return (BookMetadata) Utilities.generateLlmJsonResponse(aiClient, promptParameters, generateOverview, BookMetadata.class);
     }
 
     public CastMetadata createCast(String summary) {

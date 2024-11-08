@@ -9,9 +9,9 @@ public record CastMetadata(
         StringBuilder sb = new StringBuilder();
         for(CharacterMetadata character: cast.characterMetadata()) {
             sb.append(character.name());
-            sb.append(" ("+character.profession()+"\n");
-            sb.append("Description: "+character.description());
-            sb.append("History: "+character.history());
+            sb.append(" (").append(character.profession()).append(")\n");
+            sb.append("Description: ").append(character.description());
+            sb.append("History: ").append(character.history());
             sb.append("\n");
         }
         return sb.toString();
