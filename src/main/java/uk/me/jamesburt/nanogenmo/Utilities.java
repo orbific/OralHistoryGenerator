@@ -26,7 +26,7 @@ public class Utilities {
         return promptTemplate.createMessage(promptParameters);
     }
 
-    public static Record generateLlmJsonResponse(ChatModel aiClient, Map<String, Object> promptParameters, Resource resource, Class<? extends Record> outputClass) {
+    public static <T extends Record> T generateLlmJsonResponse(ChatModel aiClient, Map<String, Object> promptParameters, Resource resource, Class<T> outputClass) {
         Message m = createMessage(promptParameters, resource);
         var outputConverter = new BeanOutputConverter<>(outputClass);
         var jsonSchema = outputConverter.getJsonSchema();
@@ -41,6 +41,6 @@ public class Utilities {
         logger.info("AI responded.");
         logger.info(response.getMetadata().toString());
         logger.info(response.getResult().toString());
-        return outputConverter.convert(content);
+        return outputClass.cast(outputConverter.convert(content));
     }
 }
