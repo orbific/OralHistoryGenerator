@@ -1,10 +1,6 @@
 package uk.me.jamesburt.nanogenmo.outputgeneration;
 
 import org.jsoup.nodes.Entities;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import uk.me.jamesburt.nanogenmo.datastructures.BookMetadata;
-import uk.me.jamesburt.nanogenmo.datastructures.ChapterData;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,18 +11,13 @@ import uk.me.jamesburt.nanogenmo.datastructures.ChapterOutput;
 
 public class HtmlOutputGenerator implements OutputGenerator {
 
-    private static final Logger logger = LoggerFactory.getLogger(HtmlOutputGenerator.class);
-
     private static final String fileName = "novel.html";
     @Override
-    public void generate(BookMetadata metadata, List<ChapterOutput> outputChapters) {
-        if(outputChapters.size() != metadata.chapterMetadata().length) {
-            throw new RuntimeException("Metadata contains different number of chapters to the output text - stopping generation");
-        }
+    public void generate(List<ChapterOutput> outputChapters) {
 
         try (FileWriter writer = new FileWriter(fileName)) {
 
-            writer.write(generateTextAsString(metadata,outputChapters));
+            writer.write(generateTextAsString(outputChapters));
 
         } catch (IOException ioe) {
             // Don't try to handle - exit and leave to developer to fix
@@ -38,7 +29,6 @@ public class HtmlOutputGenerator implements OutputGenerator {
         String[] lines = text.split("\\r?\\n");
 
         // Wrap each line in <p> tags and append to a StringBuilder
-        StringBuilder htmlBuilder = new StringBuilder();
         for (String line : lines) {
             if (!line.trim().isEmpty()) { // Ignore empty lines
                 element.append("<p>").append(Entities.escape(line)).append("</p>\n");
@@ -49,21 +39,19 @@ public class HtmlOutputGenerator implements OutputGenerator {
     /*
      * The file generation could be a default method on the interface.
      */
-    protected String generateTextAsString(BookMetadata metadata, List<ChapterOutput> outputChapters) {
+    protected String generateTextAsString(List<ChapterOutput> outputChapters) {
         Document doc = Document.createShell("");
         Element body = doc.body();
         body.appendElement("h1").text("The Secret History of Rave");
-        body.appendElement("p").text("This is an HTML page generated using JSoup.");
 
-        // TODO fix structures to avoid this issue of assuming both items are the same length
-        for(int i=0; i<metadata.chapterMetadata().length;i++) {
-            body.appendElement("h2").text(metadata.chapterMetadata()[i].chapterTitle());
+        for(ChapterOutput chapter: outputChapters) {
+            body.appendElement("h2").text(chapter.getTitle());
 
-            // TODO this appends paragraphs within an italic tag
+            // TODO this embeds multiple paragraphs within an italic tag
             Element italicHeader = body.appendElement("i");
-            appendTextLinesAsHtml(italicHeader, outputChapters.get(i).getOverview());
+            appendTextLinesAsHtml(italicHeader, chapter.getOverview());
 
-            appendTextLinesAsHtml(body, outputChapters.get(i).getOutputText());
+            appendTextLinesAsHtml(body, chapter.getOutputText());
         }
         return body.html();
     }

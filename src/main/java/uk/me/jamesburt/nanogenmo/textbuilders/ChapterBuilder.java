@@ -15,16 +15,13 @@ import org.springframework.core.io.Resource;
 import uk.me.jamesburt.nanogenmo.Utilities;
 import uk.me.jamesburt.nanogenmo.datastructures.CastMetadata;
 import uk.me.jamesburt.nanogenmo.datastructures.ChapterMetadata;
-import uk.me.jamesburt.nanogenmo.datastructures.ChapterData;
+import uk.me.jamesburt.nanogenmo.datastructures.ChapterResponseData;
 import uk.me.jamesburt.nanogenmo.datastructures.CharacterMetadata;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-/**
- * TODO add a JSON structure for the chapter to get the formatting right
- */
 public class ChapterBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(ChapterBuilder.class);
@@ -41,15 +38,15 @@ public class ChapterBuilder {
         this.chatModel = chatModel;
     }
 
-    public ChapterData generate(ChapterMetadata chapterMetadata, CastMetadata castMetadata) {
+    public ChapterResponseData generate(ChapterMetadata chapterMetadata, CastMetadata castMetadata) {
         return generate(chapterMetadata, castMetadata, null);
     }
 
-    public ChapterData generate(ChapterMetadata chapterMetadata, CastMetadata castMetadata, String chapterTextSoFar) {
+    public ChapterResponseData generate(ChapterMetadata chapterMetadata, CastMetadata castMetadata, String chapterTextSoFar) {
         Map<String, Object> promptParameters = new HashMap<>();
         promptParameters.put("chapterTitle", chapterMetadata.chapterTitle());
         promptParameters.put("description", chapterMetadata.description());
-        promptParameters.put("characters", convertCastToString(castMetadata));
+        promptParameters.put("characters", CastMetadata.convertCastToString(castMetadata));
 
         Message m;
         if(chapterTextSoFar!=null) {
@@ -60,14 +57,13 @@ public class ChapterBuilder {
         }
 
 
-        var outputConverter = new BeanOutputConverter<>(ChapterData.class);
+        var outputConverter = new BeanOutputConverter<>(ChapterResponseData.class);
         var jsonSchema = outputConverter.getJsonSchema();
 
         ChatOptions co = OpenAiChatOptions.builder()
                 .withResponseFormat(new OpenAiApi.ChatCompletionRequest.ResponseFormat(OpenAiApi.ChatCompletionRequest.ResponseFormat.Type.JSON_SCHEMA, jsonSchema))
                 .build();
 
-        // TODO - need to keep calling the model until the chapter hits the word count
         logger.info("Making call for chapter:" + chapterMetadata.chapterTitle()+ "\n");
         Prompt prompt = new Prompt(List.of(m),co);
         long startTime = System.currentTimeMillis();
@@ -81,21 +77,5 @@ public class ChapterBuilder {
         String content = response.getResult().getOutput().getContent();
         return outputConverter.convert(content);
     }
-
-    /*
-     * TODO this method needs to be moved to somewhere more appropriate
-     */
-    private String convertCastToString(CastMetadata cast) {
-        StringBuilder sb = new StringBuilder();
-        for(CharacterMetadata character: cast.characterMetadata()) {
-            sb.append(character.name());
-            sb.append(" ("+character.profession()+"\n");
-            sb.append("Description: "+character.description());
-            sb.append("History: "+character.history());
-            sb.append("\n");
-        }
-        return sb.toString();
-    }
-
 
 }

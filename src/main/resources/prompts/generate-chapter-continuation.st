@@ -6,6 +6,10 @@ Each account should begin with a title on a single line, wrapped in HTML bold ta
 The role could be something such as dancer, DJ, security guard, etc. Anyone who would have been there at the time.
 
 The current chapter of this oral history has the title {chapterTitle}
+A description of this chapter: {description}
+
+All accounts in this chapter should be directly related to the chapter as described above.
+
 
 Your response should be generated as JSON with the following fields:
  text should contain the main body of the chapter including the edited interviews. The first interviews in the chapter should be providing context and wider scope. As we go through the chapter, more detail is given.
@@ -26,3 +30,8 @@ The characters quoted in the oral history sections may include the following peo
 The first part of the chapter is below:
 
 {chapterText}
+
+Your response should contain only the new text for the chapter and not the initial part of the chapter.
+The total length of the chapter section that is generated should be about 1000 words.
+
+The chapter continues:

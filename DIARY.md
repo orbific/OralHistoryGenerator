@@ -1,5 +1,20 @@
 # Journal
 
+## 2024-11-07
+* Time: 1 hour, total 8.75 hours
+* Completed refactor of Bookbuilder class
+
+## 2024-11-07
+* Time: 1 hour, total 8.75 hours
+* Fixed a foolish bug where I was miscounting the length of a chapter, and making too many requests to generate it
+* Altered the chapter length check to use word count
+* Generated a full version of the book using the current prompts, which pass in chapter context
+* Fixed some of the TODOs in the project - notably making the chapter's title part of the ChapterOutput object
+* TODO: Produce a more structured chapter body, breaking it down into separate accounts that are JSON-structured
+* TODO: Set up co-pilot in my IDE
+* TODO: BookBuilder class needs to be refactored
+* Generation of a current version of the novel took about 11 minutes for 80,000 words, costing around 10c, but contained repeated text
+
 ## 2024-11-06
 * Time: 1 hour, total 7.75 hours
 * Going to start with synopsis and work down through chapter (checking for arc) through to individual accounts
@@ -13,6 +28,7 @@
 * TODO - consider generating the cast with reference to the chapters
 * TODO change the logs to make them easier to read
 * Tried generating a complete novel, but there was a loop in the code resending the same request
+* [Commit to share work between laptops](https://github.com/orbific/OralHistoryGenerator/commit/f430a4b2e8ec2ad8965fa73a29b5d92c7295187d)
 * **Total cost for the day**: 11c
 
 ## 2024-11-05

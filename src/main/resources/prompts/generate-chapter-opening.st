@@ -1,11 +1,13 @@
 I would like you to produce a section from an oral history about rave music and its relationship to the supernatural.
 The book is a weird but enjoyable book of accounts of the rave era.
-The account should begin with a title on a single line, wrapped in HTML bold tags, containing the name of the person and their role.
+The account should begin with a title on a single line, containing the name of the person and their role.
 
 The role could be something such as dancer, DJ, security guard, etc. Anyone who would have been there at the time.
 
 The current chapter of this oral history has the title {chapterTitle}
 A description of this chapter: {description}
+
+All accounts in this chapter should be directly related to the chapter as described above.
 
 Your response should be generated as JSON with the following fields:
  editorialOverview should contain an introduction for the chapter, providing historical context, and how this chapter fits into the wider themes of rave, folklore, and the UK music underground. It should not begin with the chapter name or refer to 'this chapter'. It is merely setting the scene
@@ -23,3 +25,5 @@ Each account should be about 2 paragraphs long.
 
 The characters quoted in the oral history sections may include the following people:
 {characters}
+
+The total length of this chapter section should be about 1000 words.
