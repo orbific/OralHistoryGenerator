@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChapterOutput {
+    private final String title;
+
     private final String overview;
     private final List<String> bodyText;
 
-    public ChapterOutput(String overview, String initial) {
+    public ChapterOutput(String title, String overview, String initial) {
+        this.title = title;
         this.overview = overview;
         bodyText = new ArrayList<>();
         bodyText.add(initial);
@@ -21,16 +24,12 @@ public class ChapterOutput {
         return overview;
     }
 
-    public List<String> getBodyText() {
-        return bodyText;
-    }
-
     public int getChapterLength() {
-        int totalSize = 0;
+        int wordCount = 0;
         for(String output: bodyText) {
-            totalSize+=bodyText.size();
+            wordCount += output.split("\\s+").length;
         }
-        return totalSize;
+        return wordCount;
     }
 
     public String getOutputText() {
@@ -40,5 +39,9 @@ public class ChapterOutput {
             sb.append(":\n");
         }
         return sb.toString();
+    }
+
+    public String getTitle() {
+        return title;
     }
 }

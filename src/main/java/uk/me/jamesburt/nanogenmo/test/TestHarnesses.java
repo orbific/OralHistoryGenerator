@@ -12,7 +12,6 @@ import uk.me.jamesburt.nanogenmo.outputgeneration.CommandlineOutputGenerator;
 import uk.me.jamesburt.nanogenmo.textbuilders.BookBuilder;
 import uk.me.jamesburt.nanogenmo.textbuilders.ChapterBuilder;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,23 +40,21 @@ public class TestHarnesses {
                 "The Dawn of Rave: Rituals and Resonance",
                 "Exploring the emergence of rave culture in the late 1980s, this chapter delves into the mystical and ritualistic elements that intertwined with the music scene, highlighting the influence of the supernatural on early raves."
         );
-        ChapterMetadata[] allChapters = {testChapterDefinition};
-        BookMetadata bookMetadata = new BookMetadata("",allChapters);
         CharacterMetadata[] emptyCharactersArray = new CharacterMetadata[0];
-        ChapterData result = chapterBuilder.generate(testChapterDefinition, new CastMetadata(emptyCharactersArray));
-        ChapterOutput output = new ChapterOutput(result.editorialOverview(), result.text());
+        ChapterResponseData result = chapterBuilder.generate(testChapterDefinition, new CastMetadata(emptyCharactersArray));
+        ChapterOutput output = new ChapterOutput(testChapterDefinition.chapterTitle(), result.editorialOverview(), result.text());
         List<ChapterOutput> chapters = Collections.singletonList(output);
-        commandlineOutputGenerator.generate(bookMetadata, chapters);
+        commandlineOutputGenerator.generate(chapters);
     }
 
     @Test
     public void generateSynopsis() {
         BookMetadata bookDescription = bookBuilder.createBookMetadata();
-//        for(ChapterMetadata chapter: bookDescription.chapterMetadata()) {
-//            System.out.println(chapter.chapterTitle());
-//            System.out.println(chapter.description());
-//            System.out.println("\n");
-//        }
+        for(ChapterMetadata chapter: bookDescription.chapterMetadata()) {
+            System.out.println(chapter.chapterTitle());
+            System.out.println(chapter.description());
+            System.out.println("\n");
+        }
         System.out.println(bookDescription.summary());
 
     }

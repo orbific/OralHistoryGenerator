@@ -2,28 +2,22 @@ package uk.me.jamesburt.nanogenmo.textbuilders;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.prompt.ChatOptions;
-import org.springframework.ai.chat.messages.Message;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.openai.OpenAiChatModel;
-import org.springframework.ai.openai.OpenAiChatOptions;
-import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import uk.me.jamesburt.nanogenmo.Utilities;
-import uk.me.jamesburt.nanogenmo.datastructures.*;
+import uk.me.jamesburt.nanogenmo.datastructures.BookMetadata;
+import uk.me.jamesburt.nanogenmo.datastructures.CastMetadata;
+import uk.me.jamesburt.nanogenmo.datastructures.ChapterMetadata;
+import uk.me.jamesburt.nanogenmo.datastructures.ChapterOutput;
+import uk.me.jamesburt.nanogenmo.datastructures.ChapterResponseData;
 import uk.me.jamesburt.nanogenmo.outputgeneration.OutputGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * TODO set up a common text-builder interface
- */
 public class BookBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(BookBuilder.class);
@@ -45,15 +39,13 @@ public class BookBuilder {
     @Value("${bookgenerator.chapterCount}")
     private String chapterCount;
 
-    // TODO need to adjust this to be in words
-    @Value("${bookgenerator.charactersPerChapter}")
-    private String charactersPerChapter;
+    @Value("${bookgenerator.wordsPerChapter}")
+    private Integer wordsPerChapter;
 
     public BookBuilder(OpenAiChatModel aiClient) {
         this.aiClient = aiClient;
     }
 
-    // TODO this method is too long and needs refactoring
     public void generateBook() {
 
         BookMetadata bookOverview = createBookMetadata();
@@ -61,7 +53,7 @@ public class BookBuilder {
 
         List<ChapterOutput> rawOutput = generateChapters(bookOverview, bookCast);
 
-        outputGenerator.generate(bookOverview, rawOutput);
+        outputGenerator.generate(rawOutput);
 
     }
 
@@ -69,25 +61,24 @@ public class BookBuilder {
         List<ChapterOutput> rawOutput = new ArrayList<>();
         if(bookOverview!=null) {
             for(ChapterMetadata chapterMetadata : bookOverview.chapterMetadata()) {
-                rawOutput.add(createChapterText(chapterMetadata, castMetadata));
+                rawOutput.add(createChapterText(chapterMetadata.chapterTitle(),chapterMetadata, castMetadata));
             }
 
         }
         return rawOutput;
     }
 
-    private ChapterOutput createChapterText(ChapterMetadata chapterMetadata, CastMetadata castMetadata) {
+    private ChapterOutput createChapterText(String title, ChapterMetadata chapterMetadata, CastMetadata castMetadata) {
         logger.info("Generating opening text for chapter");
-        ChapterData chapterOpening = chapterBuilder.generate(chapterMetadata, castMetadata);
-        ChapterOutput chapterOutput = new ChapterOutput(chapterOpening.editorialOverview(), chapterOpening.text());
+        ChapterResponseData chapterOpening = chapterBuilder.generate(chapterMetadata, castMetadata);
+        ChapterOutput chapterOutput = new ChapterOutput(title, chapterOpening.editorialOverview(), chapterOpening.text());
 
-        // TODO should be able to create the parameter as integer?
-        logger.info("Characters per chapter is "+charactersPerChapter);
-        int characterCount = Integer.parseInt(charactersPerChapter);
-        while(chapterOutput.getChapterLength()<characterCount) {
+        logger.info("Characters per chapter is "+ wordsPerChapter);
+        while(chapterOutput.getChapterLength()<wordsPerChapter) {
+            logger.info("Text size so far is "+chapterOutput.getChapterLength());
             logger.info("Making request for further chapter content");
-            // TODO we need another prompt here to build on the previous info
-            ChapterData continuedText = chapterBuilder.generate(chapterMetadata, castMetadata, chapterOutput.getOutputText());
+
+            ChapterResponseData continuedText = chapterBuilder.generate(chapterMetadata, castMetadata, chapterOutput.getOutputText());
             chapterOutput.addText(continuedText.text());
         }
 
@@ -98,46 +89,14 @@ public class BookBuilder {
         Map<String, Object> promptParameters = Map.of(
                 "chapterCount", chapterCount
         );
-
-        Message m = Utilities.createMessage(promptParameters, generateOverview);
-
-        var outputConverter = new BeanOutputConverter<>(BookMetadata.class);
-        var jsonSchema = outputConverter.getJsonSchema();
-
-        ChatOptions co = OpenAiChatOptions.builder()
-                .withResponseFormat(new OpenAiApi.ChatCompletionRequest.ResponseFormat(OpenAiApi.ChatCompletionRequest.ResponseFormat.Type.JSON_SCHEMA, jsonSchema))
-                .build();
-        Prompt prompt = new Prompt(List.of(m),co);
-        logger.info(prompt + "\n");
-        ChatResponse response = aiClient.call(prompt);
-        String content = response.getResult().getOutput().getContent();
-        logger.info("AI responded.");
-        logger.info(response.getMetadata().toString());
-        logger.info(response.getResult().toString());
-        return outputConverter.convert(content);
+        return (BookMetadata) Utilities.generateLlmJsonResponse(aiClient, promptParameters, generateCast, BookMetadata.class);
     }
-
 
     public CastMetadata createCast(String summary) {
         Map<String, Object> promptParameters = Map.of(
                 "BookSummary", summary
         );
-
-        Message m = Utilities.createMessage(promptParameters, generateCast);
-
-        var outputConverter = new BeanOutputConverter<>(CastMetadata.class);
-        var jsonSchema = outputConverter.getJsonSchema();
-
-        ChatOptions co = OpenAiChatOptions.builder()
-                .withResponseFormat(new OpenAiApi.ChatCompletionRequest.ResponseFormat(OpenAiApi.ChatCompletionRequest.ResponseFormat.Type.JSON_SCHEMA, jsonSchema))
-                .build();
-        Prompt prompt = new Prompt(List.of(m),co);
-        logger.info(prompt + "\n");
-        ChatResponse response = aiClient.call(prompt);
-        String content = response.getResult().getOutput().getContent();
-        logger.info("AI responded.");
-        logger.info(response.getMetadata().toString());
-        logger.info(response.getResult().toString());
-        return outputConverter.convert(content);
+        return (CastMetadata) Utilities.generateLlmJsonResponse(aiClient, promptParameters, generateCast, CastMetadata.class);
     }
+
 }
