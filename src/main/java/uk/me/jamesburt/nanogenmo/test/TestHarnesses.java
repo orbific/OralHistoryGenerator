@@ -93,7 +93,7 @@ public class TestHarnesses {
         promptParameters.put("bookSummary", "This oral history traces the evolution of rave music in the UK, starting from its inception in the late 1980s, where the Acid House scene combined pulsating beats with a quest for spiritual and psychedelic experiences. As the movement grew, significant events like the Castlemorton Common Festival illustrated how these gatherings became a breeding ground for communal spirituality and a unique relationship with the supernatural. Moving into the present day, the book explores the modern resurgence of rave culture, where new subgenres and technology continue to inspire ravers to seek out mystical experiences, revealing a lasting connection between music, community, and the ethereal.");
         promptParameters.put("name", "Dr. Sophie Lang");
         promptParameters.put("role", "Cultural Anthropologist");
-        promptParameters.put("lengthInParagraphs", "three");
+        promptParameters.put("lengthInParagraphs", Utilities.pickNumberAndConvertToWords(4));
 
         SingleAccount response = Utilities.generateLlmJsonResponse(aiClient, promptParameters, generateCast, SingleAccount.class);
         System.out.println("********");

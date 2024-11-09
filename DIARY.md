@@ -1,11 +1,17 @@
 # Journal
 
-## 2024-11-07
-* Time: 0.5 hour, total 9.25 hours
+## 2024-11-09
+* Time: 1 hour, total 9.75 hours
+* Added utility method to generate numbers as strings
+* Fixed a weird bug with ResponseFormat imports
+
+## 2024-11-08
+* Time: 1 hour, total 9.75 hours
 * Completed refactor of Bookbuilder class, created utility method to call LLM
 * Started working on a prompt for a single account
 * Created a test harness method to generate a single oral history account
 * [Commit for refactoring and changes to make chapter generation stateful](https://github.com/orbific/OralHistoryGenerator/commit/1d60b1487369d1f33d684646ab7d4e28dbe75e55)
+* [Further refactoring, added test harness to create a single account](https://github.com/orbific/OralHistoryGenerator/commit/4ea459c29af8f03835872346a7d689be447fba05)
 
 ## 2024-11-07
 * Time: 1 hour, total 8.75 hours
