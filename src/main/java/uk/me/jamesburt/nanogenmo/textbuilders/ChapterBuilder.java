@@ -10,6 +10,7 @@ import uk.me.jamesburt.nanogenmo.datastructures.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class ChapterBuilder {
 
@@ -20,6 +21,9 @@ public class ChapterBuilder {
 
     @Value("classpath:/prompts/generate-chapter-continuation.st")
     private Resource generateChapterContinuation;
+
+    @Value("classpath:/prompts/generate-single-account.st")
+    private Resource generateSingleAccount;
 
     private final OpenAiChatModel chatModel;
 
@@ -45,7 +49,44 @@ public class ChapterBuilder {
             promptToUse = generateChapter;
         }
 
-        return (ChapterResponseData) Utilities.generateLlmJsonResponse(chatModel, promptParameters, promptToUse, ChapterResponseData.class);
+        return Utilities.generateLlmJsonResponse(chatModel, promptParameters, promptToUse, ChapterResponseData.class);
+
+    }
+
+    public ChapterResponseData generateViaSingleAccount(ChapterMetadata chapterMetadata, CastMetadata castMetadata, String chapterTextSoFar) {
+        Map<String, Object> promptParameters = new HashMap<>();
+        promptParameters.put("chapterTitle", chapterMetadata.chapterTitle());
+        promptParameters.put("description", chapterMetadata.description());
+        promptParameters.put("bookTitle", "The Secret History of Rave");
+        promptParameters.put("chapterDescription", "Exploring the birth of the UK rave scene in the late 1980s, this chapter delves into the Acid House movement's psychedelic influences and the mystical experiences reported by ravers, revealing how early gatherings were often inspired by notions of transcendence and altered states.");
+        promptParameters.put("bookSummary", "This oral history traces the evolution of rave music in the UK, starting from its inception in the late 1980s, where the Acid House scene combined pulsating beats with a quest for spiritual and psychedelic experiences. As the movement grew, significant events like the Castlemorton Common Festival illustrated how these gatherings became a breeding ground for communal spirituality and a unique relationship with the supernatural. Moving into the present day, the book explores the modern resurgence of rave culture, where new subgenres and technology continue to inspire ravers to seek out mystical experiences, revealing a lasting connection between music, community, and the ethereal.");
+
+        // TODO not sure this is producing random output
+        // TODO how do I ensure not to repeat the previous speaker?
+        Random r = new Random();
+        CharacterMetadata speaker = castMetadata.characterMetadata()[r.nextInt(castMetadata.characterMetadata().length)];
+
+        promptParameters.put("name", speaker.name());
+        promptParameters.put("role", speaker.profession());
+        promptParameters.put("castDescription",speaker.description());
+        promptParameters.put("castHistory",speaker.history());
+
+        promptParameters.put("lengthInParagraphs", Utilities.pickNumberAndConvertToWords(4));
+        String tone = Utilities.getRandomTone();
+        promptParameters.put("tone", tone);
+
+        Resource promptToUse = generateSingleAccount;
+        if(chapterTextSoFar!=null) {
+            String earlierSection = "The new account follows the earlier section of the chapter" +
+                    "\n\n---\n\n" +
+                    chapterTextSoFar;
+            promptParameters.put("earlierSection", earlierSection);
+        } else {
+            promptParameters.put("earlierSection", "");
+            promptToUse = generateChapter;
+        }
+
+        return Utilities.generateLlmJsonResponse(chatModel, promptParameters, promptToUse, ChapterResponseData.class);
 
     }
 

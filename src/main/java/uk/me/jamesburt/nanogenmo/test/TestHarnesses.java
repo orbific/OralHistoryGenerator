@@ -16,10 +16,7 @@ import uk.me.jamesburt.nanogenmo.outputgeneration.CommandlineOutputGenerator;
 import uk.me.jamesburt.nanogenmo.textbuilders.BookBuilder;
 import uk.me.jamesburt.nanogenmo.textbuilders.ChapterBuilder;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class provides a series of simple test methods, allowing aspects of the code to be run in isolation
@@ -91,12 +88,21 @@ public class TestHarnesses {
         promptParameters.put("chapterTitle", "The Dawn of Rave: Acid House and the Supernatural");
         promptParameters.put("chapterDescription", "Exploring the birth of the UK rave scene in the late 1980s, this chapter delves into the Acid House movement's psychedelic influences and the mystical experiences reported by ravers, revealing how early gatherings were often inspired by notions of transcendence and altered states.");
         promptParameters.put("bookSummary", "This oral history traces the evolution of rave music in the UK, starting from its inception in the late 1980s, where the Acid House scene combined pulsating beats with a quest for spiritual and psychedelic experiences. As the movement grew, significant events like the Castlemorton Common Festival illustrated how these gatherings became a breeding ground for communal spirituality and a unique relationship with the supernatural. Moving into the present day, the book explores the modern resurgence of rave culture, where new subgenres and technology continue to inspire ravers to seek out mystical experiences, revealing a lasting connection between music, community, and the ethereal.");
-        promptParameters.put("name", "Dr. Sophie Lang");
-        promptParameters.put("role", "Cultural Anthropologist");
         promptParameters.put("lengthInParagraphs", Utilities.pickNumberAndConvertToWords(4));
+        String tone = Utilities.getRandomTone();
+        promptParameters.put("tone", tone);
+
+        promptParameters.put("name", "Tom Williams");
+        promptParameters.put("role", "Policeman turned activist");
+        promptParameters.put("castDescription","A former police officer turned activist who witnessed the clash between law enforcement and rave culture firsthand, advocating for the rights of ravers.");
+        promptParameters.put("castHistory","Tom spent years enforcing the law during the height of the rave scene, often finding himself at odds with the very culture he was trying to control. His turning point came during the protests against the Criminal Justice Act, where he saw the passion and resilience of the rave community. Disillusioned with the system, Tom left the police force and became an activist, fighting for the rights of ravers and promoting harm reduction policies. His journey highlights the transformation of perception surrounding rave culture—from a criminalized activity to a vibrant community deserving of respect and recognition.");
+        promptParameters.put("earlierSection","");
 
         SingleAccount response = Utilities.generateLlmJsonResponse(aiClient, promptParameters, generateCast, SingleAccount.class);
         System.out.println("********");
+        System.out.println("Tone here is " + tone);
+        System.out.println("********");
         System.out.println(response.text());
     }
+
 }

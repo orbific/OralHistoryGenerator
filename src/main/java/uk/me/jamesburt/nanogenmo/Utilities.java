@@ -59,4 +59,16 @@ public class Utilities {
         RuleBasedNumberFormat numberFormat = new RuleBasedNumberFormat(Locale.UK, RuleBasedNumberFormat.SPELLOUT);
         return numberFormat.format(randomNumber);
     }
+
+    /*
+     * TODO this needs to move to a more generic method via an instantiated, configurable class
+     */
+    public static String getRandomTone() {
+        String[] tones = {"irration", "world-weary anger", "joy", "cloying nostalgia"};
+        Random random = new Random();
+        int randomNumber = random.nextInt(tones.length);
+        return tones[randomNumber];
+
+    }
+
 }

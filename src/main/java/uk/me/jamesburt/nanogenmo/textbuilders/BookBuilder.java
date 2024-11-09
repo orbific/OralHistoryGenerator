@@ -78,7 +78,8 @@ public class BookBuilder {
             logger.info("Text size so far is "+chapterOutput.getChapterLength());
             logger.info("Making request for further chapter content");
 
-            ChapterResponseData continuedText = chapterBuilder.generate(chapterMetadata, castMetadata, chapterOutput.getOutputText());
+            // TODO something about this return type seems off - do we need more structure here rather than just wrapping a single body String?
+            ChapterResponseData continuedText = chapterBuilder.generateViaSingleAccount(chapterMetadata, castMetadata, chapterOutput.getOutputText());
             chapterOutput.addText(continuedText.text());
         }
 
