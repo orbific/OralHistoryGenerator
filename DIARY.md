@@ -1,9 +1,17 @@
 # Journal
 
 ## 2024-11-09
-* Time: 1 hour, total 9.75 hours
+* Time: 1 hour, total 10.75 hours
 * Added utility method to generate numbers as strings
 * Fixed a weird bug with ResponseFormat imports
+* Adding more description of speaker to the single-account generation script.
+* A lot of these accounts don't really work as oral history somehow. I can now start trying to 'debug' them
+* Adding new method to generate a chapter from individual accounts
+  * TODO - need to work out how to switch between these.
+* Ran the script so far to see how it did on three 1500-word chapters
+* TODO - tomorrow - consider how to generate a narrative novel simply
+  * This will allow me to explore how to get a simple case working
+* TODO I need to spend a day grinding through test cases
 
 ## 2024-11-08
 * Time: 1 hour, total 9.75 hours

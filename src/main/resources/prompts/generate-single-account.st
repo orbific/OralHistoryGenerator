@@ -1,4 +1,4 @@
-Generate a first person account from someone about their time in the rave era.
+Generate a first person account from someone about their time in the rave era that may continue an existing chapter.
 This will be from a book with the title: {bookTitle}
 
 The book is described as follows: {bookSummary}
@@ -8,8 +8,8 @@ It will be part of a chapter called {chapterTitle}
 This chapter is described as follows: {chapterDescription}
 
 The account is written by {name} whose role was {role}
-
-This account should be related to the chapter as written above.
+{castDescription}
+{castHistory}
 
 Your response should be generated as JSON with a single field containing the text
 
@@ -22,3 +22,9 @@ They should not make sweeping abstract statements about what rave means. They sh
 
 The language used should be simple and everyday.
 The account should be about {lengthInParagraphs} paragraphs long.
+
+The account by {name} should have a tone of {tone}.
+
+The opening should be more interesting than just "I remember".
+
+{earlierSection}
