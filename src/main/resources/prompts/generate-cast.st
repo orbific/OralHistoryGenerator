@@ -1,9 +1,7 @@
 You are producing a list of imaginary people to be referred to in a novel.
 This novel is in the form of an oral history.
 
-The book is set in the history of UK rave culture from the 1980s through to the current day.
-It focuses particularly on the strange and uncanny experiences people had.
-
+A description of the book is as follows:
 {BookSummary}
 
 You will produce a cast of characters for the novel. Each will have an arc throughout the story of the book.

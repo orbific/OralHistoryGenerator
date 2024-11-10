@@ -25,6 +25,9 @@ public class ChapterBuilder {
     @Value("classpath:/prompts/generate-single-account.st")
     private Resource generateSingleAccount;
 
+    @Value("classpath:/prompts/generate-novel-text.st")
+    private Resource generateNovelText;
+
     private final OpenAiChatModel chatModel;
 
     public ChapterBuilder(OpenAiChatModel chatModel) {
@@ -53,6 +56,7 @@ public class ChapterBuilder {
 
     }
 
+    // TODO there is a lot of hard-coding here that needs to be dealt with
     public ChapterResponseData generateViaSingleAccount(ChapterMetadata chapterMetadata, CastMetadata castMetadata, String chapterTextSoFar) {
         Map<String, Object> promptParameters = new HashMap<>();
         promptParameters.put("chapterTitle", chapterMetadata.chapterTitle());
@@ -75,7 +79,7 @@ public class ChapterBuilder {
         String tone = Utilities.getRandomTone();
         promptParameters.put("tone", tone);
 
-        Resource promptToUse = generateSingleAccount;
+        Resource promptToUse = generateNovelText;
         if(chapterTextSoFar!=null) {
             String earlierSection = "The new account follows the earlier section of the chapter" +
                     "\n\n---\n\n" +
@@ -86,6 +90,32 @@ public class ChapterBuilder {
             promptToUse = generateChapter;
         }
 
+        return Utilities.generateLlmJsonResponse(chatModel, promptParameters, promptToUse, ChapterResponseData.class);
+
+    }
+
+
+    public ChapterResponseData generateNarrativeNovelAccount(ChapterMetadata chapterMetadata, CastMetadata castMetadata, String chapterTextSoFar) {
+        Map<String, Object> promptParameters = new HashMap<>();
+        promptParameters.put("chapterTitle", chapterMetadata.chapterTitle());
+        promptParameters.put("description", chapterMetadata.description());
+        promptParameters.put("bookTitle", "The Great Gatsby 2: ");
+        promptParameters.put("chapterDescription", chapterMetadata.description());
+        promptParameters.put("chapterTextSoFar", chapterTextSoFar);
+
+        // TODO fix these params
+        StringBuilder sb = new StringBuilder();
+        for(CharacterMetadata character: castMetadata.characterMetadata()) {
+            sb.append(character.name()).append(" (").append(character.profession()).append(")\n");
+            sb.append(character.description());
+            sb.append(character.history());
+
+        }
+        promptParameters.put("bookCast",sb.toString());
+        // TODO promptParameters.put("booksoFarSummary", "A summary of earlier chapters (if they exist)");
+
+
+        Resource promptToUse = generateNovelText;
         return Utilities.generateLlmJsonResponse(chatModel, promptParameters, promptToUse, ChapterResponseData.class);
 
     }
