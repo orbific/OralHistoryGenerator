@@ -13,6 +13,7 @@ import uk.me.jamesburt.nanogenmo.CommandlineExecutor;
 import uk.me.jamesburt.nanogenmo.Utilities;
 import uk.me.jamesburt.nanogenmo.datastructures.*;
 import uk.me.jamesburt.nanogenmo.outputgeneration.CommandlineOutputGenerator;
+import uk.me.jamesburt.nanogenmo.outputgeneration.HtmlOutputGenerator;
 import uk.me.jamesburt.nanogenmo.textbuilders.BookBuilder;
 import uk.me.jamesburt.nanogenmo.textbuilders.ChapterBuilder;
 
@@ -43,6 +44,9 @@ public class TestHarnesses {
     @Value("classpath:/prompts/generate-single-account.st")
     private Resource generateCast;
 
+    @Value("${bookgenerator.wordsPerChapter}")
+    private Integer wordsPerChapter;
+
 
     @Test
     public void testGenerateSingleChapter() {
@@ -58,8 +62,49 @@ public class TestHarnesses {
     }
 
     @Test
-    public void generateSynopsis() {
-        BookMetadata bookDescription = bookBuilder.createBookMetadata();
+    public void generateNovel() {
+        BookMetadata bookDescription = bookBuilder.createNovelMetadata();
+//        for(ChapterMetadata chapter: bookDescription.chapterMetadata()) {
+//            System.out.println(chapter.chapterTitle());
+//            System.out.println(chapter.description());
+//            System.out.println("\n");
+//        }
+//        System.out.println(bookDescription.summary());
+
+        CastMetadata bookCast = bookBuilder.createCast(bookDescription.summary());
+//        System.out.println("-------------\n");
+//        for(CharacterMetadata characterMetadata: bookCast.characterMetadata()) {
+//            System.out.println(characterMetadata.name());
+//            System.out.println(characterMetadata.profession());
+//            System.out.println(characterMetadata.history());
+//            System.out.println(characterMetadata.description());
+//            System.out.println("-------------\n");
+//        }
+
+        List<ChapterOutput> rawOutput = new ArrayList<>();
+
+        // Copied text from the main body of the code
+        for(ChapterMetadata chapterMetadata : bookDescription.chapterMetadata()) {
+            ChapterResponseData chapterOpening = chapterBuilder.generateNarrativeNovelAccount(chapterMetadata, bookCast, "");
+            ChapterOutput chapterOutput = new ChapterOutput("The Great Gatsby 2: Gatsby vs Kong", chapterOpening.editorialOverview(), chapterOpening.text());
+
+            while(chapterOutput.getChapterLength()<wordsPerChapter) {
+
+                // TODO something about this return type seems off - do we need more structure here rather than just wrapping a single body String?
+                ChapterResponseData continuedText = chapterBuilder.generateNarrativeNovelAccount(chapterMetadata, bookCast, chapterOutput.getOutputText());
+                chapterOutput.addText(continuedText.text());
+            }
+            rawOutput.add(chapterOutput);
+        }
+
+        new HtmlOutputGenerator().generate(rawOutput);
+
+
+    }
+
+    @Test
+    public void generateOralhistorySynopsis() {
+        BookMetadata bookDescription = bookBuilder.createOralhistoryMetadata();
         for(ChapterMetadata chapter: bookDescription.chapterMetadata()) {
             System.out.println(chapter.chapterTitle());
             System.out.println(chapter.description());

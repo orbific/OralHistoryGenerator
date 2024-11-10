@@ -30,8 +30,11 @@ public class BookBuilder {
     @Autowired
     ChapterBuilder chapterBuilder;
 
-    @Value("classpath:/prompts/generate-synopsis.st")
-    private Resource generateOverview;
+    @Value("classpath:/prompts/generate-oralhistory-synopsis.st")
+    private Resource generateOralHistoryOverview;
+
+    @Value("classpath:/prompts/generate-novel-synopsis.st")
+    private Resource generateNovelOverview;
 
     @Value("classpath:/prompts/generate-cast.st")
     private Resource generateCast;
@@ -48,7 +51,7 @@ public class BookBuilder {
 
     public void generateBook() {
 
-        BookMetadata bookOverview = createBookMetadata();
+        BookMetadata bookOverview = createOralhistoryMetadata();
         CastMetadata bookCast = createCast(bookOverview.summary());
 
         List<ChapterOutput> rawOutput = generateChapters(bookOverview, bookCast);
@@ -57,7 +60,8 @@ public class BookBuilder {
 
     }
 
-    private List<ChapterOutput> generateChapters(BookMetadata bookOverview, CastMetadata castMetadata) {
+    // TODO rethink visibility
+    public List<ChapterOutput> generateChapters(BookMetadata bookOverview, CastMetadata castMetadata) {
         List<ChapterOutput> rawOutput = new ArrayList<>();
         if(bookOverview!=null) {
             for(ChapterMetadata chapterMetadata : bookOverview.chapterMetadata()) {
@@ -86,12 +90,23 @@ public class BookBuilder {
         return chapterOutput;
     }
 
-    public BookMetadata createBookMetadata() {
+
+    public BookMetadata createOralhistoryMetadata() {
+        return generateBookOverview(generateOralHistoryOverview);
+    }
+
+    public BookMetadata createNovelMetadata() {
+        return generateBookOverview(generateNovelOverview);
+    }
+
+    private BookMetadata generateBookOverview(Resource bookSynopsis) {
         Map<String, Object> promptParameters = Map.of(
                 "chapterCount", chapterCount
         );
-        return (BookMetadata) Utilities.generateLlmJsonResponse(aiClient, promptParameters, generateOverview, BookMetadata.class);
+        return Utilities.generateLlmJsonResponse(aiClient, promptParameters, bookSynopsis, BookMetadata.class);
+
     }
+
 
     public CastMetadata createCast(String summary) {
         Map<String, Object> promptParameters = Map.of(
