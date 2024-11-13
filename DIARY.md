@@ -1,5 +1,22 @@
 # Journal
 
+## 2024-11-12
+* Time: XX hour, total XX hours
+* Rewrote git history to remove incorrect username.
+
+## 2024-11-12
+* Time: 0.25 hour, total 12.75 hours
+* Continuing with the refactoring, trying to complete that. Probably doing too much in one go
+
+## 2024-11-11
+* Time: 0.75 hour, total 12.5 hours
+* Looking at basic tests - instantiation of new objects making it difficult to test these - I can now see where Factory classes come from.
+  * Moving the LlmClient method out to be a new class
+* Started to split out the oral-history generator from the simple novel experiment
+
+## 2024-11-10
+* Time: 1 hour, total 11.75 hours
+
 ## 2024-11-09
 * Time: 1 hour, total 10.75 hours
 * Added utility method to generate numbers as strings

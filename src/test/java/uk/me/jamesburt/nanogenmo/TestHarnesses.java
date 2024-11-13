@@ -1,23 +1,22 @@
-package uk.me.jamesburt.nanogenmo.test;
+package uk.me.jamesburt.nanogenmo;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.me.jamesburt.nanogenmo.CommandlineExecutor;
-import uk.me.jamesburt.nanogenmo.Utilities;
 import uk.me.jamesburt.nanogenmo.datastructures.*;
 import uk.me.jamesburt.nanogenmo.outputgeneration.CommandlineOutputGenerator;
 import uk.me.jamesburt.nanogenmo.outputgeneration.HtmlOutputGenerator;
 import uk.me.jamesburt.nanogenmo.textbuilders.BookBuilder;
-import uk.me.jamesburt.nanogenmo.textbuilders.ChapterBuilder;
+import uk.me.jamesburt.nanogenmo.textbuilders.simplenovel.ChapterBuilder;
 
 import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This class provides a series of simple test methods, allowing aspects of the code to be run in isolation
@@ -30,7 +29,7 @@ public class TestHarnesses {
     CommandlineExecutor commandlineExecutor;
 
     @Autowired
-    OpenAiChatModel aiClient;
+    LlmClient llmClient;
 
     @Autowired
     private BookBuilder bookBuilder;
@@ -50,20 +49,21 @@ public class TestHarnesses {
 
     @Test
     public void testGenerateSingleChapter() {
-        ChapterMetadata testChapterDefinition = new ChapterMetadata(
-                "The Dawn of Rave: Rituals and Resonance",
-                "Exploring the emergence of rave culture in the late 1980s, this chapter delves into the mystical and ritualistic elements that intertwined with the music scene, highlighting the influence of the supernatural on early raves."
-        );
-        CharacterMetadata[] emptyCharactersArray = new CharacterMetadata[0];
-        ChapterResponseData result = chapterBuilder.generate(testChapterDefinition, new CastMetadata(emptyCharactersArray));
-        ChapterOutput output = new ChapterOutput(testChapterDefinition.chapterTitle(), result.editorialOverview(), result.text());
-        List<ChapterOutput> chapters = Collections.singletonList(output);
-        commandlineOutputGenerator.generate(chapters);
+        fail("Needs to be updated");
+//        ChapterMetadata testChapterDefinition = new ChapterMetadata(
+//                "The Dawn of Rave: Rituals and Resonance",
+//                "Exploring the emergence of rave culture in the late 1980s, this chapter delves into the mystical and ritualistic elements that intertwined with the music scene, highlighting the influence of the supernatural on early raves."
+//        );
+//        CharacterMetadata[] emptyCharactersArray = new CharacterMetadata[0];
+//        ChapterResponseData result = chapterBuilder.generate(testChapterDefinition, new CastMetadata(emptyCharactersArray));
+//        ChapterOutput output = new ChapterOutput(testChapterDefinition.chapterTitle(), result.editorialOverview(), result.text());
+//        List<ChapterOutput> chapters = Collections.singletonList(output);
+//        commandlineOutputGenerator.generate(chapters);
     }
 
     @Test
     public void generateNovel() {
-        BookMetadata bookDescription = bookBuilder.createNovelMetadata();
+        BookMetadata bookDescription = bookBuilder.createMetadata();
 //        for(ChapterMetadata chapter: bookDescription.chapterMetadata()) {
 //            System.out.println(chapter.chapterTitle());
 //            System.out.println(chapter.description());
@@ -85,16 +85,6 @@ public class TestHarnesses {
 
         // Copied text from the main body of the code
         for(ChapterMetadata chapterMetadata : bookDescription.chapterMetadata()) {
-            ChapterResponseData chapterOpening = chapterBuilder.generateNarrativeNovelAccount(chapterMetadata, bookCast, "");
-            ChapterOutput chapterOutput = new ChapterOutput("The Great Gatsby 2: Gatsby vs Kong", chapterOpening.editorialOverview(), chapterOpening.text());
-
-            while(chapterOutput.getChapterLength()<wordsPerChapter) {
-
-                // TODO something about this return type seems off - do we need more structure here rather than just wrapping a single body String?
-                ChapterResponseData continuedText = chapterBuilder.generateNarrativeNovelAccount(chapterMetadata, bookCast, chapterOutput.getOutputText());
-                chapterOutput.addText(continuedText.text());
-            }
-            rawOutput.add(chapterOutput);
         }
 
         new HtmlOutputGenerator().generate(rawOutput);
@@ -104,7 +94,8 @@ public class TestHarnesses {
 
     @Test
     public void generateOralhistorySynopsis() {
-        BookMetadata bookDescription = bookBuilder.createOralhistoryMetadata();
+        // TODO need the right builder here
+        BookMetadata bookDescription = bookBuilder.createMetadata();
         for(ChapterMetadata chapter: bookDescription.chapterMetadata()) {
             System.out.println(chapter.chapterTitle());
             System.out.println(chapter.description());
@@ -143,7 +134,7 @@ public class TestHarnesses {
         promptParameters.put("castHistory","Tom spent years enforcing the law during the height of the rave scene, often finding himself at odds with the very culture he was trying to control. His turning point came during the protests against the Criminal Justice Act, where he saw the passion and resilience of the rave community. Disillusioned with the system, Tom left the police force and became an activist, fighting for the rights of ravers and promoting harm reduction policies. His journey highlights the transformation of perception surrounding rave culture—from a criminalized activity to a vibrant community deserving of respect and recognition.");
         promptParameters.put("earlierSection","");
 
-        SingleAccount response = Utilities.generateLlmJsonResponse(aiClient, promptParameters, generateCast, SingleAccount.class);
+        SingleAccount response = llmClient.generateLlmJsonResponse(promptParameters, generateCast, SingleAccount.class);
         System.out.println("********");
         System.out.println("Tone here is " + tone);
         System.out.println("********");

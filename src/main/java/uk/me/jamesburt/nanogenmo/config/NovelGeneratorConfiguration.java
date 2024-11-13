@@ -8,20 +8,20 @@ import uk.me.jamesburt.nanogenmo.outputgeneration.CommandlineOutputGenerator;
 import uk.me.jamesburt.nanogenmo.outputgeneration.HtmlOutputGenerator;
 import uk.me.jamesburt.nanogenmo.outputgeneration.OutputGenerator;
 import uk.me.jamesburt.nanogenmo.outputgeneration.PdfOutputGenerator;
-import uk.me.jamesburt.nanogenmo.textbuilders.BookBuilder;
-import uk.me.jamesburt.nanogenmo.textbuilders.ChapterBuilder;
+import uk.me.jamesburt.nanogenmo.textbuilders.simplenovel.ChapterBuilder;
+import uk.me.jamesburt.nanogenmo.textbuilders.simplenovel.BookBuilder;
 
 @Configuration
 public class NovelGeneratorConfiguration {
 
     @Bean
-    public BookBuilder createBookBuilder(OpenAiChatModel chatModel) {
-        return new BookBuilder(chatModel);
+    public uk.me.jamesburt.nanogenmo.textbuilders.BookBuilder createSimpleNovelBuilder() {
+        return new BookBuilder();
     }
 
     @Bean
-    public ChapterBuilder createChapterBuilder(OpenAiChatModel chatModel) {
-        return new ChapterBuilder(chatModel);
+    public ChapterBuilder createChapterBuilder() {
+        return new ChapterBuilder();
     }
 
     @Bean

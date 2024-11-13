@@ -2,39 +2,29 @@ package uk.me.jamesburt.nanogenmo.textbuilders;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import uk.me.jamesburt.nanogenmo.Utilities;
+import uk.me.jamesburt.nanogenmo.LlmClient;
 import uk.me.jamesburt.nanogenmo.datastructures.BookMetadata;
 import uk.me.jamesburt.nanogenmo.datastructures.CastMetadata;
 import uk.me.jamesburt.nanogenmo.datastructures.ChapterMetadata;
 import uk.me.jamesburt.nanogenmo.datastructures.ChapterOutput;
-import uk.me.jamesburt.nanogenmo.datastructures.ChapterResponseData;
 import uk.me.jamesburt.nanogenmo.outputgeneration.OutputGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class BookBuilder {
+public abstract class BookBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(BookBuilder.class);
-
-    private final OpenAiChatModel aiClient;
 
     @Autowired
     OutputGenerator outputGenerator;
 
     @Autowired
-    ChapterBuilder chapterBuilder;
-
-    @Value("classpath:/prompts/generate-oralhistory-synopsis.st")
-    private Resource generateOralHistoryOverview;
-
-    @Value("classpath:/prompts/generate-novel-synopsis.st")
-    private Resource generateNovelOverview;
+    LlmClient llmClient;
 
     @Value("classpath:/prompts/generate-cast.st")
     private Resource generateCast;
@@ -42,16 +32,11 @@ public class BookBuilder {
     @Value("${bookgenerator.chapterCount}")
     private String chapterCount;
 
-    @Value("${bookgenerator.wordsPerChapter}")
-    private Integer wordsPerChapter;
 
-    public BookBuilder(OpenAiChatModel aiClient) {
-        this.aiClient = aiClient;
-    }
 
     public void generateBook() {
 
-        BookMetadata bookOverview = createOralhistoryMetadata();
+        BookMetadata bookOverview = createMetadata();
         CastMetadata bookCast = createCast(bookOverview.summary());
 
         List<ChapterOutput> rawOutput = generateChapters(bookOverview, bookCast);
@@ -65,45 +50,25 @@ public class BookBuilder {
         List<ChapterOutput> rawOutput = new ArrayList<>();
         if(bookOverview!=null) {
             for(ChapterMetadata chapterMetadata : bookOverview.chapterMetadata()) {
-                rawOutput.add(createChapterText(chapterMetadata.chapterTitle(),chapterMetadata, castMetadata));
+                rawOutput.add(createChapterText(chapterMetadata, castMetadata));
             }
-
         }
         return rawOutput;
     }
 
-    private ChapterOutput createChapterText(String title, ChapterMetadata chapterMetadata, CastMetadata castMetadata) {
-        logger.info("Generating opening text for chapter");
-        ChapterResponseData chapterOpening = chapterBuilder.generate(chapterMetadata, castMetadata);
-        ChapterOutput chapterOutput = new ChapterOutput(title, chapterOpening.editorialOverview(), chapterOpening.text());
-
-        logger.info("Characters per chapter is "+ wordsPerChapter);
-        while(chapterOutput.getChapterLength()<wordsPerChapter) {
-            logger.info("Text size so far is "+chapterOutput.getChapterLength());
-            logger.info("Making request for further chapter content");
-
-            // TODO something about this return type seems off - do we need more structure here rather than just wrapping a single body String?
-            ChapterResponseData continuedText = chapterBuilder.generateViaSingleAccount(chapterMetadata, castMetadata, chapterOutput.getOutputText());
-            chapterOutput.addText(continuedText.text());
-        }
-
-        return chapterOutput;
-    }
+    protected abstract ChapterOutput createChapterText(ChapterMetadata chapterMetadata, CastMetadata castMetadata);
 
 
-    public BookMetadata createOralhistoryMetadata() {
-        return generateBookOverview(generateOralHistoryOverview);
-    }
+    public abstract BookMetadata createMetadata();
 
-    public BookMetadata createNovelMetadata() {
-        return generateBookOverview(generateNovelOverview);
-    }
 
-    private BookMetadata generateBookOverview(Resource bookSynopsis) {
+
+    // TODO check this visibility is correct
+    protected BookMetadata generateBookOverview(Resource bookSynopsis) {
         Map<String, Object> promptParameters = Map.of(
                 "chapterCount", chapterCount
         );
-        return Utilities.generateLlmJsonResponse(aiClient, promptParameters, bookSynopsis, BookMetadata.class);
+        return llmClient.generateLlmJsonResponse(promptParameters, bookSynopsis, BookMetadata.class);
 
     }
 
@@ -112,7 +77,7 @@ public class BookBuilder {
         Map<String, Object> promptParameters = Map.of(
                 "BookSummary", summary
         );
-        return (CastMetadata) Utilities.generateLlmJsonResponse(aiClient, promptParameters, generateCast, CastMetadata.class);
+        return llmClient.generateLlmJsonResponse(promptParameters, generateCast, CastMetadata.class);
     }
 
 }

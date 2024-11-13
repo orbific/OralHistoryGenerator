@@ -1,10 +1,11 @@
-package uk.me.jamesburt.nanogenmo.textbuilders;
+package uk.me.jamesburt.nanogenmo.textbuilders.oralhistory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ai.openai.OpenAiChatModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import uk.me.jamesburt.nanogenmo.LlmClient;
 import uk.me.jamesburt.nanogenmo.Utilities;
 import uk.me.jamesburt.nanogenmo.datastructures.*;
 
@@ -16,22 +17,39 @@ public class ChapterBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(ChapterBuilder.class);
 
-    @Value("classpath:/prompts/generate-chapter-opening.st")
-    private Resource generateChapter;
-
     @Value("classpath:/prompts/generate-chapter-continuation.st")
     private Resource generateChapterContinuation;
 
     @Value("classpath:/prompts/generate-single-account.st")
     private Resource generateSingleAccount;
 
+    @Autowired
+    LlmClient llmClient;
+
+    @Value("classpath:/prompts/generate-chapter-opening.st")
+    private Resource generateChapter;
+
     @Value("classpath:/prompts/generate-novel-text.st")
     private Resource generateNovelText;
 
-    private final OpenAiChatModel chatModel;
+    @Value("${bookgenerator.wordsPerChapter}")
+    protected Integer wordsPerChapter;
 
-    public ChapterBuilder(OpenAiChatModel chatModel) {
-        this.chatModel = chatModel;
+    public ChapterOutput generateChapterText(ChapterMetadata chapterMetadata, CastMetadata castMetadata, String chapterTextSoFar) {
+        ChapterResponseData chapterOpening = generate(chapterMetadata, castMetadata);
+        ChapterOutput chapterOutput = new ChapterOutput(chapterMetadata.chapterTitle(), chapterOpening.editorialOverview(), chapterOpening.text());
+
+        logger.info("Characters per chapter is "+ wordsPerChapter);
+        while(chapterOutput.getChapterLength()<wordsPerChapter) {
+            logger.info("Text size so far is "+chapterOutput.getChapterLength());
+            logger.info("Making request for further chapter content");
+
+            // TODO something about this return type seems off - do we need more structure here rather than just wrapping a single body String?
+            ChapterResponseData continuedText = generateViaSingleAccount(chapterMetadata, castMetadata, chapterOutput.getOutputText());
+            chapterOutput.addText(continuedText.text());
+        }
+
+        return chapterOutput;
     }
 
     public ChapterResponseData generate(ChapterMetadata chapterMetadata, CastMetadata castMetadata) {
@@ -52,9 +70,10 @@ public class ChapterBuilder {
             promptToUse = generateChapter;
         }
 
-        return Utilities.generateLlmJsonResponse(chatModel, promptParameters, promptToUse, ChapterResponseData.class);
+        return llmClient.generateLlmJsonResponse(promptParameters, promptToUse, ChapterResponseData.class);
 
     }
+
 
     // TODO there is a lot of hard-coding here that needs to be dealt with
     public ChapterResponseData generateViaSingleAccount(ChapterMetadata chapterMetadata, CastMetadata castMetadata, String chapterTextSoFar) {
@@ -79,7 +98,7 @@ public class ChapterBuilder {
         String tone = Utilities.getRandomTone();
         promptParameters.put("tone", tone);
 
-        Resource promptToUse = generateNovelText;
+        Resource promptToUse = generateSingleAccount;
         if(chapterTextSoFar!=null) {
             String earlierSection = "The new account follows the earlier section of the chapter" +
                     "\n\n---\n\n" +
@@ -90,34 +109,7 @@ public class ChapterBuilder {
             promptToUse = generateChapter;
         }
 
-        return Utilities.generateLlmJsonResponse(chatModel, promptParameters, promptToUse, ChapterResponseData.class);
+        return llmClient.generateLlmJsonResponse(promptParameters, promptToUse, ChapterResponseData.class);
 
     }
-
-
-    public ChapterResponseData generateNarrativeNovelAccount(ChapterMetadata chapterMetadata, CastMetadata castMetadata, String chapterTextSoFar) {
-        Map<String, Object> promptParameters = new HashMap<>();
-        promptParameters.put("chapterTitle", chapterMetadata.chapterTitle());
-        promptParameters.put("description", chapterMetadata.description());
-        promptParameters.put("bookTitle", "The Great Gatsby 2: ");
-        promptParameters.put("chapterDescription", chapterMetadata.description());
-        promptParameters.put("chapterTextSoFar", chapterTextSoFar);
-
-        // TODO fix these params
-        StringBuilder sb = new StringBuilder();
-        for(CharacterMetadata character: castMetadata.characterMetadata()) {
-            sb.append(character.name()).append(" (").append(character.profession()).append(")\n");
-            sb.append(character.description());
-            sb.append(character.history());
-
-        }
-        promptParameters.put("bookCast",sb.toString());
-        // TODO promptParameters.put("booksoFarSummary", "A summary of earlier chapters (if they exist)");
-
-
-        Resource promptToUse = generateNovelText;
-        return Utilities.generateLlmJsonResponse(chatModel, promptParameters, promptToUse, ChapterResponseData.class);
-
-    }
-
 }

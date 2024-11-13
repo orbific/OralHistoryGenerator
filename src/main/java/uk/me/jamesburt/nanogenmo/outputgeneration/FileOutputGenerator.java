@@ -2,6 +2,7 @@ package uk.me.jamesburt.nanogenmo.outputgeneration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import uk.me.jamesburt.nanogenmo.datastructures.BookMetadata;
 import uk.me.jamesburt.nanogenmo.datastructures.ChapterOutput;
 

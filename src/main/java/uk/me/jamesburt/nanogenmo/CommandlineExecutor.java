@@ -10,14 +10,11 @@ import uk.me.jamesburt.nanogenmo.textbuilders.BookBuilder;
 @Component
 public class CommandlineExecutor  implements CommandLineRunner {
 
-    private static final Logger logger = LoggerFactory.getLogger(CommandlineExecutor.class);
-
     @Autowired
     BookBuilder bookBuilder;
 
     @Override
-    public void run(String... args) throws Exception {
-        logger.info("LAUNCHING BOOK GENERATION");
+    public void run(String... args)  {
         bookBuilder.generateBook();
     }
 
