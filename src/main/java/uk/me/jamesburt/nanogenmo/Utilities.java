@@ -11,6 +11,7 @@ public class Utilities {
 
     private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
 
+
     public static String pickNumberAndConvertToWords(int n) {
         if (n < 1) throw new IllegalArgumentException("n must be greater than or equal to 1.");
 

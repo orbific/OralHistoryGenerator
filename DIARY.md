@@ -2,7 +2,8 @@
 
 ## 2024-11-12
 * Time: XX hour, total XX hours
-* Rewrote git history to remove incorrect username.
+* Rewrote git history to remove incorrect username, fixing associated git consistency issues
+* Completed refactoring
 
 ## 2024-11-12
 * Time: 0.25 hour, total 12.75 hours
@@ -95,7 +96,10 @@
 * Checked the new HTML generator is working
 * Set up a basic PDF generator which looks fairly poor so far
 * Started work on a test harness, but need to figure out how to override the commandline runner, which launches when the spring context is set up.
+<<<<<<< HEAD
 * [Added new commit to share work with other laptop](https://github.com/orbific/OralHistoryGenerator/commit/8d97fe0287f29e6cce9de3d163335acf85004fab)
+=======
+>>>>>>> 8559fed0338ed6ea117849b579c4f325049b7064
 * **Total cost for the day**: 3c
 
 ## 2024-11-02

@@ -33,10 +33,10 @@ public abstract class BookBuilder {
     private String chapterCount;
 
 
-
     public void generateBook() {
 
         BookMetadata bookOverview = createMetadata();
+
         CastMetadata bookCast = createCast(bookOverview.summary());
 
         List<ChapterOutput> rawOutput = generateChapters(bookOverview, bookCast);
@@ -79,5 +79,4 @@ public abstract class BookBuilder {
         );
         return llmClient.generateLlmJsonResponse(promptParameters, generateCast, CastMetadata.class);
     }
-
 }

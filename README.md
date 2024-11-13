@@ -9,4 +9,3 @@ This is a commandline Spring AI. Building and running this requires a JDK.
 ```mvn clean package``` will produce a Jar file containing the code.
 
 This can then be executed with ```java -jar target/oral-history-generator-1.0-SNAPSHOT.jar```
-
