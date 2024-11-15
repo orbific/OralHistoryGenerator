@@ -4,6 +4,7 @@ import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import uk.me.jamesburt.nanogenmo.LlmClient;
 import uk.me.jamesburt.nanogenmo.outputgeneration.CommandlineOutputGenerator;
 import uk.me.jamesburt.nanogenmo.outputgeneration.HtmlOutputGenerator;
 import uk.me.jamesburt.nanogenmo.outputgeneration.OutputGenerator;
@@ -22,6 +23,11 @@ public class NovelGeneratorConfiguration {
     @Bean
     public ChapterBuilder createChapterBuilder() {
         return new ChapterBuilder();
+    }
+
+    @Bean
+    public LlmClient createLlmClient(OpenAiChatModel chatModel) {
+        return new LlmClient(chatModel);
     }
 
     @Bean

@@ -41,12 +41,12 @@ public abstract class BookBuilder {
 
         List<ChapterOutput> rawOutput = generateChapters(bookOverview, bookCast);
 
-        outputGenerator.generate(rawOutput);
+        outputGenerator.generate(getBookTitle(), rawOutput);
 
     }
 
-    // TODO rethink visibility
-    public List<ChapterOutput> generateChapters(BookMetadata bookOverview, CastMetadata castMetadata) {
+
+    private List<ChapterOutput> generateChapters(BookMetadata bookOverview, CastMetadata castMetadata) {
         List<ChapterOutput> rawOutput = new ArrayList<>();
         if(bookOverview!=null) {
             for(ChapterMetadata chapterMetadata : bookOverview.chapterMetadata()) {
@@ -58,10 +58,7 @@ public abstract class BookBuilder {
 
     protected abstract ChapterOutput createChapterText(ChapterMetadata chapterMetadata, CastMetadata castMetadata);
 
-
     public abstract BookMetadata createMetadata();
-
-
 
     // TODO check this visibility is correct
     protected BookMetadata generateBookOverview(Resource bookSynopsis) {
@@ -72,11 +69,17 @@ public abstract class BookBuilder {
 
     }
 
-
     public CastMetadata createCast(String summary) {
         Map<String, Object> promptParameters = Map.of(
                 "BookSummary", summary
         );
         return llmClient.generateLlmJsonResponse(promptParameters, generateCast, CastMetadata.class);
     }
+
+    /**
+     * The implementation of book builder needs to specify the title for the book being generated
+     * @return
+     */
+    protected abstract String getBookTitle();
+
 }

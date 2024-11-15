@@ -29,9 +29,6 @@ public class ChapterBuilder {
     @Value("classpath:/prompts/generate-chapter-opening.st")
     private Resource generateChapter;
 
-    @Value("classpath:/prompts/generate-novel-text.st")
-    private Resource generateNovelText;
-
     @Value("${bookgenerator.wordsPerChapter}")
     protected Integer wordsPerChapter;
 

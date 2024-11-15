@@ -13,11 +13,11 @@ public class HtmlOutputGenerator implements OutputGenerator {
 
     private static final String fileName = "novel.html";
     @Override
-    public void generate(List<ChapterOutput> outputChapters) {
+    public void generate(String bookTitle, List<ChapterOutput> outputChapters) {
 
         try (FileWriter writer = new FileWriter(fileName)) {
 
-            writer.write(generateTextAsString(outputChapters));
+            writer.write(generateTextAsString(bookTitle, outputChapters));
 
         } catch (IOException ioe) {
             // Don't try to handle - exit and leave to developer to fix
@@ -39,10 +39,10 @@ public class HtmlOutputGenerator implements OutputGenerator {
     /*
      * The file generation could be a default method on the interface.
      */
-    protected String generateTextAsString(List<ChapterOutput> outputChapters) {
+    protected String generateTextAsString(String bookTitle, List<ChapterOutput> outputChapters) {
         Document doc = Document.createShell("");
         Element body = doc.body();
-        body.appendElement("h1").text("The Secret History of Rave");
+        body.appendElement("h1").text(bookTitle);
 
         for(ChapterOutput chapter: outputChapters) {
             body.appendElement("h2").text(chapter.getTitle());

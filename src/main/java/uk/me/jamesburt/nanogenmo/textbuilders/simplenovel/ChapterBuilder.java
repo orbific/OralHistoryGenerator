@@ -17,7 +17,11 @@ public class ChapterBuilder {
     @Autowired
     LlmClient llmClient;
 
-    @Value("classpath:/prompts/generate-novel-text.st")
+    @Value("${bookgenerator.wordsPerChapter}")
+    private Integer wordsPerChapter;
+
+
+    @Value("classpath:prompts/simplenovel/generate-novel-text.st")
     private Resource generateNovelText;
 
     public ChapterResponseData generateChapterText(ChapterMetadata chapterMetadata, CastMetadata castMetadata, String chapterTextSoFar) {
@@ -27,6 +31,7 @@ public class ChapterBuilder {
         promptParameters.put("bookTitle", "The Great Gatsby 2: Gatsby vs Kong");
         promptParameters.put("chapterDescription", chapterMetadata.description());
         promptParameters.put("chapterTextSoFar", chapterTextSoFar);
+        promptParameters.put("wordsPerChapter", wordsPerChapter);
 
         // TODO fix these params
         StringBuilder sb = new StringBuilder();
@@ -41,6 +46,7 @@ public class ChapterBuilder {
 
 
         Resource promptToUse = generateNovelText;
+
         return llmClient.generateLlmJsonResponse(promptParameters, promptToUse, ChapterResponseData.class);
 
     }

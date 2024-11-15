@@ -9,13 +9,10 @@ import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.converter.BeanOutputConverter;
-import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.openai.api.ResponseFormat;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import uk.me.jamesburt.nanogenmo.Utilities;
-import uk.me.jamesburt.nanogenmo.textbuilders.BookBuilder;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +22,6 @@ public class LlmClient {
     private static final Logger logger = LoggerFactory.getLogger(LlmClient.class);
 
     private final ChatModel aiClient;
-
 
     public LlmClient(ChatModel aiClient) {
         this.aiClient = aiClient;

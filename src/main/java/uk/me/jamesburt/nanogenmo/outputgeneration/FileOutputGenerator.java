@@ -19,10 +19,10 @@ public class FileOutputGenerator implements OutputGenerator {
 
     private static final String fileName = "novel.txt";
     @Override
-    public void generate(List<ChapterOutput> outputChapters) {
+    public void generate(String bookTitle, List<ChapterOutput> outputChapters) {
 
         try (FileWriter writer = new FileWriter(fileName)) {
-            writer.write("The Secret History of Rave");
+            writer.write(bookTitle);
             writer.write("\n\n\n");
 
             for(ChapterOutput chapter: outputChapters) {

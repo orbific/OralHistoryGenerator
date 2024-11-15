@@ -1,5 +1,4 @@
 You are producing a list of imaginary people to be referred to in a novel.
-This novel is in the form of an oral history.
 
 A description of the book is as follows:
 {BookSummary}

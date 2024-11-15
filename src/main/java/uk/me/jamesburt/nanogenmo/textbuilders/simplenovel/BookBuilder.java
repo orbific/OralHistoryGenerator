@@ -22,12 +22,13 @@ public class BookBuilder extends uk.me.jamesburt.nanogenmo.textbuilders.BookBuil
 
     @Override
     protected ChapterOutput createChapterText(ChapterMetadata chapterMetadata, CastMetadata castMetadata) {
+        // Initial call to create basic chapter
         ChapterResponseData chapterOpening = chapterBuilder.generateChapterText(chapterMetadata, castMetadata, "");
-        ChapterOutput chapterOutput = new ChapterOutput("The Great Gatsby 2: Gatsby vs Kong", chapterOpening.editorialOverview(), chapterOpening.text());
+        // TODO consider adding a new basic chapter here
+        ChapterOutput chapterOutput = new ChapterOutput(chapterMetadata.chapterTitle(), chapterOpening.editorialOverview(), chapterOpening.text());
 
         while(chapterOutput.getChapterLength()<wordsPerChapter) {
 
-            // TODO something about this return type seems off - do we need more structure here rather than just wrapping a single body String?
             ChapterResponseData continuedText = chapterBuilder.generateChapterText(chapterMetadata, castMetadata, chapterOutput.getOutputText());
             chapterOutput.addText(continuedText.text());
         }
@@ -38,6 +39,11 @@ public class BookBuilder extends uk.me.jamesburt.nanogenmo.textbuilders.BookBuil
     @Override
     public BookMetadata createMetadata() {
         return generateBookOverview(generateNovelOverview);
+    }
+
+    @Override
+    protected String getBookTitle() {
+        return "The Great Gatsby 2: Gatsby vs Kong";
     }
 
 }

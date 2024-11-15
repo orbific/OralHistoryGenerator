@@ -1,9 +1,21 @@
 # Journal
 
-## 2024-11-12
-* Time: XX hour, total XX hours
+## 2024-11-14
+* Time: 1 hour, total 14. hours
+* Creating a version of the novel to review
+* Fixed a minor but annoying formatting bug where ":" was being added to the end of sections.
+* Removed hardcoding for the title in the output text
+* TODO Should there be a filter of some type to review the text produced and tidy it
+* TODO have tried moving the resource files into a new folder so I can simply create a JAR of the plugins.
+* TODO there is a real element of tell not show in the text - need to figure how to work around that
+
+## 2024-11-13
+* Time: 1 hour, total 13.75 hours
 * Rewrote git history to remove incorrect username, fixing associated git consistency issues
 * Completed refactoring
+* Fixing various issues with git access and SSH keys 
+* Also managed to lose the key I was using for openAI
+* An entire day of not achieving much, due to inefficient sharing of code
 
 ## 2024-11-12
 * Time: 0.25 hour, total 12.75 hours

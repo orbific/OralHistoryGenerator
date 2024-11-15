@@ -16,9 +16,6 @@ public class BookBuilder extends uk.me.jamesburt.nanogenmo.textbuilders.BookBuil
     @Value("classpath:/prompts/generate-oralhistory-synopsis.st")
     private Resource generateOralHistoryOverview;
 
-    @Value("classpath:/prompts/generate-novel-text.st")
-    private Resource generateNovelText;
-
     @Autowired
     ChapterBuilder chapterBuilder;
 
@@ -31,5 +28,14 @@ public class BookBuilder extends uk.me.jamesburt.nanogenmo.textbuilders.BookBuil
     @Override
     public BookMetadata createMetadata() {
         return generateBookOverview(generateOralHistoryOverview);
+    }
+
+    /**
+     * TODO Ideally this should not be hardcoded in the class - should be some parameters as part of the config
+     * @return
+     */
+    @Override
+    protected String getBookTitle() {
+        return "The Secret History of Rave";
     }
 }

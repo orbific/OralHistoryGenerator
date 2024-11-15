@@ -87,7 +87,7 @@ public class TestHarnesses {
         for(ChapterMetadata chapterMetadata : bookDescription.chapterMetadata()) {
         }
 
-        new HtmlOutputGenerator().generate(rawOutput);
+        new HtmlOutputGenerator().generate("Book title", rawOutput);
 
 
     }

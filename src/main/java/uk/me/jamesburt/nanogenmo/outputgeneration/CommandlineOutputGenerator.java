@@ -15,7 +15,9 @@ public class CommandlineOutputGenerator implements OutputGenerator {
     private static final Logger logger = LoggerFactory.getLogger(CommandlineOutputGenerator.class);
 
     @Override
-    public void generate(List<ChapterOutput> outputChapters) {
+    public void generate(String bookTitle, List<ChapterOutput> outputChapters) {
+
+        System.out.println(bookTitle);
 
         System.out.println("\n*************\n");
 

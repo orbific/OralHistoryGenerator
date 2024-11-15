@@ -36,7 +36,7 @@ public class ChapterOutput {
         StringBuilder sb = new StringBuilder();
         for(String output: bodyText) {
             sb.append(output);
-            sb.append(":\n");
+            sb.append("\n");
         }
         return sb.toString();
     }
