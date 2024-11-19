@@ -20,6 +20,7 @@
 ## 2024-11-12
 * Time: 0.25 hour, total 12.75 hours
 * Continuing with the refactoring, trying to complete that. Probably doing too much in one go
+* Fixing refactoring from dividing up the two types of book
 
 ## 2024-11-11
 * Time: 0.75 hour, total 12.5 hours
@@ -29,6 +30,7 @@
 
 ## 2024-11-10
 * Time: 1 hour, total 11.75 hours
+
 
 ## 2024-11-09
 * Time: 1 hour, total 10.75 hours
