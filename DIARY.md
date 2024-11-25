@@ -56,8 +56,44 @@
 * The work seems to be in the prompts more than the structure of the code - so, putting out the appropriate prompts and working with those.
 * Trying to get text that isn't trite seems to be much easier with the web UI - this seems much richer
 
+## 2024-11-18
+* Time 0.75 hour, total 18 hours
+* Working with the web tool seems to produce more interesting results - much more vivid and interesting
+  * I was getting lots of network errors however, which were eased mobile data on my phone
+  * Interesting to think about why the responses were better - possibly the context being much richer
+    * Spring appears to have the MemoryChatAdvisor to help with this
+    * But it might be better to implement something myself
+    * Also, do my web-based chats with the LLM add to the overall context?
+  * Another possibility is that the model is simply better at discussing some topics
+
+## 2024-11-17
+* Time 0.5 hour, total 17.25 hours
+* Playing with generating a single account
+* I can produce an entire novel-length text, but there is little coherence. It doesn't feel like a novel.
+* So, I need to figure out how to make that happen.
+* It's such a weirdly indirect way to write...
+
+## 2024-11-16
+* Time: 1.25 hour, total 16.75 hours
+* Published [a blog post](https://jamesburt.me.uk/2024/11/nanogenmo-updates/) about my experience so far
+* Amended the logging so it's easier to follow the prompts and responses. This should allow me to focus on the exchanges with the LLM for the oral history 
+* Working out how best to log the generation is tricky - prompts return formatted data, but this is hard to read from logging
+  * Maybe I need another log which can track the book generation?
+* It feels very weird to be programming JSON responses in natural language - when it should be obvious how to respond
+  * Problems occurred because one of my fields was called text, which seemed to confuse the response/parser
+* Failed to set the JSON property names - had only changed the variable names
+
+## 2024-11-15
+* Time: 0.75 hour, total 15.5 hours
+* Committed the latest changes, mainly separating out the prompts for each type of novel
+* Added a system prompt containing the main rules on writing style to attempt to separate style from story
+* Went back to the oral history to produce a sample. 
+* TODO fix the layout issues for the oral history - might need to structure the single accounts.
+* TODO still need to consider validation issues - how to check something like this?
+* TODO need to write up an account for this.
+
 ## 2024-11-14
-* Time: 1 hour, total 14. hours
+* Time: 1 hour, total 14.75 hours
 * Creating a version of the novel to review
 * Fixed a minor but annoying formatting bug where ":" was being added to the end of sections.
 * Removed hardcoding for the title in the output text

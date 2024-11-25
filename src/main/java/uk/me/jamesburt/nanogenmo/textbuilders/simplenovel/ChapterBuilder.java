@@ -24,6 +24,10 @@ public class ChapterBuilder {
     @Value("classpath:prompts/simplenovel/generate-novel-text.st")
     private Resource generateNovelText;
 
+    @Value("classpath:prompts/simplenovel/novel-system-prompt.st")
+    private Resource novelSystemPrompt;
+
+
     public ChapterResponseData generateChapterText(ChapterMetadata chapterMetadata, CastMetadata castMetadata, String chapterTextSoFar) {
         Map<String, Object> promptParameters = new HashMap<>();
         promptParameters.put("chapterTitle", chapterMetadata.chapterTitle());
@@ -47,7 +51,7 @@ public class ChapterBuilder {
 
         Resource promptToUse = generateNovelText;
 
-        return llmClient.generateLlmJsonResponse(promptParameters, promptToUse, ChapterResponseData.class);
+        return llmClient.generateLlmJsonResponse(promptParameters, promptToUse, novelSystemPrompt, ChapterResponseData.class);
 
     }
 }

@@ -9,8 +9,8 @@ import uk.me.jamesburt.nanogenmo.outputgeneration.CommandlineOutputGenerator;
 import uk.me.jamesburt.nanogenmo.outputgeneration.HtmlOutputGenerator;
 import uk.me.jamesburt.nanogenmo.outputgeneration.OutputGenerator;
 import uk.me.jamesburt.nanogenmo.outputgeneration.PdfOutputGenerator;
-import uk.me.jamesburt.nanogenmo.textbuilders.simplenovel.ChapterBuilder;
-import uk.me.jamesburt.nanogenmo.textbuilders.simplenovel.BookBuilder;
+import uk.me.jamesburt.nanogenmo.textbuilders.oralhistory.ChapterBuilder;
+import uk.me.jamesburt.nanogenmo.textbuilders.oralhistory.BookBuilder;
 
 @Configuration
 public class NovelGeneratorConfiguration {
@@ -23,6 +23,13 @@ public class NovelGeneratorConfiguration {
     @Bean
     public ChapterBuilder createChapterBuilder() {
         return new ChapterBuilder();
+    }
+
+
+    @Bean
+    @Primary
+    public ChapterBuilder createOralHistoryChapterBuilder() {
+        return new uk.me.jamesburt.nanogenmo.textbuilders.oralhistory.ChapterBuilder();
     }
 
     @Bean

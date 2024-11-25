@@ -13,7 +13,7 @@ public class BookBuilder extends uk.me.jamesburt.nanogenmo.textbuilders.BookBuil
 
     private static final Logger logger = LoggerFactory.getLogger(uk.me.jamesburt.nanogenmo.textbuilders.oralhistory.BookBuilder.class);
 
-    @Value("classpath:/prompts/generate-oralhistory-synopsis.st")
+    @Value("classpath:/prompts/oralhistory/generate-oralhistory-synopsis.st")
     private Resource generateOralHistoryOverview;
 
     @Autowired

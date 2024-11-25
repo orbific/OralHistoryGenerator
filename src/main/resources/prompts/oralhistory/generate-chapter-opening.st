@@ -26,4 +26,4 @@ Each account should be about 2 paragraphs long.
 The characters quoted in the oral history sections may include the following people:
 {characters}
 
-The total length of this chapter section should be about 1000 words.
+The total length of the chapter will be about {wordsPerChapter} words.

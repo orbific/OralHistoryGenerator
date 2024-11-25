@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 import uk.me.jamesburt.nanogenmo.LlmClient;
 import uk.me.jamesburt.nanogenmo.Utilities;
 import uk.me.jamesburt.nanogenmo.datastructures.*;
@@ -13,32 +14,31 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+@Component("oralHistoryChapterBuilder")
 public class ChapterBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(ChapterBuilder.class);
 
-    @Value("classpath:/prompts/generate-chapter-continuation.st")
-    private Resource generateChapterContinuation;
-
-    @Value("classpath:/prompts/generate-single-account.st")
+    @Value("classpath:/prompts/oralhistory/generate-single-account.st")
     private Resource generateSingleAccount;
 
     @Autowired
     LlmClient llmClient;
 
-    @Value("classpath:/prompts/generate-chapter-opening.st")
+    @Value("classpath:/prompts/oralhistory/generate-chapter-opening.st")
     private Resource generateChapter;
 
     @Value("${bookgenerator.wordsPerChapter}")
     protected Integer wordsPerChapter;
 
     public ChapterOutput generateChapterText(ChapterMetadata chapterMetadata, CastMetadata castMetadata, String chapterTextSoFar) {
-        ChapterResponseData chapterOpening = generate(chapterMetadata, castMetadata);
-        ChapterOutput chapterOutput = new ChapterOutput(chapterMetadata.chapterTitle(), chapterOpening.editorialOverview(), chapterOpening.text());
+        ChapterResponseData chapterOpening = generateOpening(chapterMetadata, castMetadata);
 
-        logger.info("Characters per chapter is "+ wordsPerChapter);
-        while(chapterOutput.getChapterLength()<wordsPerChapter) {
-            logger.info("Text size so far is "+chapterOutput.getChapterLength());
+        // Ignore the text from the start of the chapter.
+        ChapterOutput chapterOutput = new ChapterOutput(chapterMetadata.chapterTitle(), chapterOpening.editorialOverview(), "");
+
+        while(chapterOutput.getWordCount()<wordsPerChapter) {
+            logger.info("Chapter word count is  "+chapterOutput.getWordCount());
             logger.info("Making request for further chapter content");
 
             // TODO something about this return type seems off - do we need more structure here rather than just wrapping a single body String?
@@ -49,23 +49,14 @@ public class ChapterBuilder {
         return chapterOutput;
     }
 
-    public ChapterResponseData generate(ChapterMetadata chapterMetadata, CastMetadata castMetadata) {
-        return generate(chapterMetadata, castMetadata, null);
-    }
-
-    public ChapterResponseData generate(ChapterMetadata chapterMetadata, CastMetadata castMetadata, String chapterTextSoFar) {
+    public ChapterResponseData generateOpening(ChapterMetadata chapterMetadata, CastMetadata castMetadata) {
         Map<String, Object> promptParameters = new HashMap<>();
         promptParameters.put("chapterTitle", chapterMetadata.chapterTitle());
         promptParameters.put("description", chapterMetadata.description());
         promptParameters.put("characters", CastMetadata.convertCastToString(castMetadata));
+        promptParameters.put("wordsPerChapter", wordsPerChapter);
 
-        Resource promptToUse;
-        if(chapterTextSoFar!=null) {
-            promptParameters.put("chapterText", chapterTextSoFar);
-            promptToUse = generateChapterContinuation;
-        } else {
-            promptToUse = generateChapter;
-        }
+        Resource promptToUse = generateChapter;
 
         return llmClient.generateLlmJsonResponse(promptParameters, promptToUse, ChapterResponseData.class);
 
@@ -90,6 +81,7 @@ public class ChapterBuilder {
         promptParameters.put("role", speaker.profession());
         promptParameters.put("castDescription",speaker.description());
         promptParameters.put("castHistory",speaker.history());
+        promptParameters.put("wordsPerChapter", wordsPerChapter);
 
         promptParameters.put("lengthInParagraphs", Utilities.pickNumberAndConvertToWords(4));
         String tone = Utilities.getRandomTone();
@@ -106,7 +98,13 @@ public class ChapterBuilder {
             promptToUse = generateChapter;
         }
 
-        return llmClient.generateLlmJsonResponse(promptParameters, promptToUse, ChapterResponseData.class);
+        SingleAccount singleAccount =  llmClient.generateLlmJsonResponse(promptParameters, promptToUse, SingleAccount.class);
+        logger.info("SINGLE ACCOUNT\n>>>>>>>>>>>");
+        String formattedOutput = singleAccount.name() + " ("+singleAccount.role()+")\n"+singleAccount.accountText();
+        logger.info(formattedOutput);
+        logger.info("<<<<<<<<<<<<");
+
+        return new ChapterResponseData("", formattedOutput);
 
     }
 }
