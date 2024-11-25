@@ -3,6 +3,7 @@ package uk.me.jamesburt.nanogenmo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -12,7 +13,7 @@ import uk.me.jamesburt.nanogenmo.datastructures.*;
 import uk.me.jamesburt.nanogenmo.outputgeneration.CommandlineOutputGenerator;
 import uk.me.jamesburt.nanogenmo.outputgeneration.HtmlOutputGenerator;
 import uk.me.jamesburt.nanogenmo.textbuilders.BookBuilder;
-import uk.me.jamesburt.nanogenmo.textbuilders.simplenovel.ChapterBuilder;
+import uk.me.jamesburt.nanogenmo.textbuilders.oralhistory.ChapterBuilder;
 
 import java.util.*;
 
@@ -35,12 +36,13 @@ public class TestHarnesses {
     private BookBuilder bookBuilder;
 
     @Autowired
+    @Qualifier("oralHistoryChapterBuilder")
     private ChapterBuilder chapterBuilder;
 
     @Autowired
     private CommandlineOutputGenerator commandlineOutputGenerator;
 
-    @Value("classpath:/prompts/generate-single-account.st")
+    @Value("classpath:/prompts/oralhistory/generate-single-account.st")
     private Resource generateCast;
 
     @Value("${bookgenerator.wordsPerChapter}")
@@ -138,7 +140,8 @@ public class TestHarnesses {
         System.out.println("********");
         System.out.println("Tone here is " + tone);
         System.out.println("********");
-        System.out.println(response.text());
+        System.out.println(response.name()+" ("+response.role()+")");
+        System.out.println(response.accountText());
     }
 
 }

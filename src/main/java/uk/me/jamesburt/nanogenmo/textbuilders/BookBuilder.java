@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import uk.me.jamesburt.nanogenmo.LlmClient;
-import uk.me.jamesburt.nanogenmo.datastructures.BookMetadata;
-import uk.me.jamesburt.nanogenmo.datastructures.CastMetadata;
-import uk.me.jamesburt.nanogenmo.datastructures.ChapterMetadata;
-import uk.me.jamesburt.nanogenmo.datastructures.ChapterOutput;
+import uk.me.jamesburt.nanogenmo.datastructures.*;
 import uk.me.jamesburt.nanogenmo.outputgeneration.OutputGenerator;
 
 import java.util.ArrayList;
@@ -37,7 +34,23 @@ public abstract class BookBuilder {
 
         BookMetadata bookOverview = createMetadata();
 
+        logger.info("CHAPTERS\n>>>>>>>>>>>>>>>>");
+        for(ChapterMetadata chapterMetadata: bookOverview.chapterMetadata()) {
+            logger.info(chapterMetadata.chapterTitle());
+            logger.info(chapterMetadata.description()+"\n");
+        }
+        logger.info("<<<<<<<<<<<<<<<");
+
         CastMetadata bookCast = createCast(bookOverview.summary());
+
+        logger.info("CAST\n>>>>>>>>>>>>>>>>");
+        for(CharacterMetadata characterMetadata: bookCast.characterMetadata()) {
+            logger.info(characterMetadata.name() + " ("+characterMetadata.profession()+")");
+            logger.info(characterMetadata.history());
+            logger.info(characterMetadata.description());
+        }
+        logger.info("<<<<<<<<<<<<<<<");
+
 
         List<ChapterOutput> rawOutput = generateChapters(bookOverview, bookCast);
 
@@ -78,7 +91,6 @@ public abstract class BookBuilder {
 
     /**
      * The implementation of book builder needs to specify the title for the book being generated
-     * @return
      */
     protected abstract String getBookTitle();
 

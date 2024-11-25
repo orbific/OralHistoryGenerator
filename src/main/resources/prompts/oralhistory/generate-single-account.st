@@ -7,11 +7,7 @@ It will be part of a chapter called {chapterTitle}
 
 This chapter is described as follows: {chapterDescription}
 
-The account is written by {name} whose role was {role}
-{castDescription}
-{castHistory}
-
-Your response should be generated as JSON with a single field containing the text
+Your response will contain the name of the person giving the account, a description of this person's role, as supplied in this prompt, and the text of their account
 
 This individual contributions should tell a story about the things that happened to this people in the rave scene at the time.
 Pay particular attention to spooky events.
@@ -19,12 +15,17 @@ The account might refer to the public figures of the time, as well as DJs and tr
 
 The person giving the account should refer to their daily life a little, and provide authentic details about their experiences such as places and specific tracks/sound systems.
 They should not make sweeping abstract statements about what rave means. They should be focussed on telling their story with the details.
+DO NOT begin with the words "I remember" or "My first rave"
 
 The language used should be simple and everyday.
 The account should be about {lengthInParagraphs} paragraphs long.
 
-The account by {name} should have a tone of {tone}.
+The account should have a tone of {tone}.
+
+Consider using tropes such as fairyland, the english pastoral, nature, witchcraft, magick and birdwatching.
 
 The opening should be more interesting than just "I remember".
+This account should continue from the earlier part of the chapter, and may refer to items mentioned elsewhere.
 
+The chapter so far is:
 {earlierSection}

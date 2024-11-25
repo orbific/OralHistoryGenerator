@@ -29,7 +29,6 @@ public class PdfOutputGenerator implements OutputGenerator {
         String htmlContent = htmlOutputGenerator.generateTextAsString(bookTitle, outputChapters);
         try (OutputStream outputStream = new FileOutputStream(fileName)) {
             HtmlConverter.convertToPdf(htmlContent, outputStream);
-            System.out.println("PDF created successfully at " + fileName);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }

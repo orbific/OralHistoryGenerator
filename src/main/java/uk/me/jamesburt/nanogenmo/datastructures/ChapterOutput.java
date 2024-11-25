@@ -24,7 +24,7 @@ public class ChapterOutput {
         return overview;
     }
 
-    public int getChapterLength() {
+    public int getWordCount() {
         int wordCount = 0;
         for(String output: bodyText) {
             wordCount += output.split("\\s+").length;
