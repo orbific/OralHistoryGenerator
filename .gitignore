@@ -30,3 +30,4 @@ replay_pid*
 # Generated files
 novel.*
 .DS_Store
+full-output.html

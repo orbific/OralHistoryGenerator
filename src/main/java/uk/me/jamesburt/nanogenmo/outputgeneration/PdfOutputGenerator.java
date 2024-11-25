@@ -36,5 +36,13 @@ public class PdfOutputGenerator implements OutputGenerator {
 
     }
 
+    public void generate(String text) {
+        try (OutputStream outputStream = new FileOutputStream(fileName)) {
+            HtmlConverter.convertToPdf(text, outputStream);
+            System.out.println("PDF created successfully at " + fileName);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+    }
 
 }

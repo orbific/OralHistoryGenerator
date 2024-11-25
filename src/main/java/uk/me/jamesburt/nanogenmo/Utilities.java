@@ -20,8 +20,13 @@ public class Utilities {
         int randomNumber = random.nextInt(n) + 1;
 
         // Convert the number to words
+        return convertIntToWords(randomNumber);
+    }
+
+    public static String convertIntToWords(int n) {
         RuleBasedNumberFormat numberFormat = new RuleBasedNumberFormat(Locale.UK, RuleBasedNumberFormat.SPELLOUT);
-        return numberFormat.format(randomNumber);
+        return numberFormat.format(n);
+
     }
 
     /*
@@ -35,4 +40,7 @@ public class Utilities {
 
     }
 
+    public static int getWordCount(String output) {
+        return output.split("\\s+").length;
+    }
 }

@@ -1,5 +1,61 @@
 # Journal
 
+# 2024-11-25
+* 30 minutes + countdown
+* Trying to move towards completion - moving the prompts for this oral band history into resource files.
+* Also experimenting a little with temperature to see if this produces something better.
+  * Setting the temperature to 1.5 produces incoherent text
+  * 1.1 mostly works, but there was an accented character that produced weird foramtting in the PDF
+* Merging in code from other laptop
+
+# 2024-11-24
+* 15 minutes
+* Trying to break down the prompts a little so I can get review the actual text
+* Not well, so early night.
+
+# 2024-11-23
+* 45 minutes
+* Changing my few-shot examples to contain example HTML, then producing a short document to review
+  * Few-shot learning appears to be pretty good at setting a format, but I need to see it over a whole document.
+* Generating a complete document to see how it looks
+* TODO - need to review the issues I've created.
+  * [Need to figure how to review the documents produced](https://github.com/orbific/OralHistoryGenerator/issues/4)
+  * [Separate the themes from novel generation](https://github.com/orbific/OralHistoryGenerator/issues/2)
+    * I should put all the indie music specific bits of prompting into an external config file
+* TODO - Copy across the code from work laptop
+* TODO - Tidy up what I have now, and make two main classes - pulp novel generator and oral history generator
+* TODO - Can I supply the whole book to the context? Would be very expensive in terms of tokens.
+* Coding by persuasion, having to set out every single thing needed. How to avoid it forgetting things?
+
+# 2024-11-22
+# 45 minutes
+* Working to hone the output to get a sample document out - 
+  * Will be interesting to see how rigorous I need to be with the formatting - seems to be OK with HTML
+* Thinking about the relative costs of models
+  * Using 40-mini is costing 15c/1M input and 60c/1M output
+  * Upgrading to 4o would be $2.50/1M input and $10/1M outout
+
+# 2024-11-21
+# 45 minutes
+* Printing the complete text took 45 minutes and 18c
+* It feels like an oral history, but the responses are repeating text.
+* I produced a large version, but there were sections of repeated text. 
+  * I made it plain that the text generated should not repeat earlier sections
+
+# 2024-11-20
+* 75 minutes
+* Continuing with working on the prompts - a couple of examples of format seems to help here.
+* I have a half-decent opening text here
+* The band narrative seems to produce something stronger - the LLM can immediately 'see' a narrative
+* Tried to craft a reusable summary prompt
+* I seem to have the basics for producing the whole novel - going to be interestin to see if this worls
+
+## 2024-11-19
+* Time 1 hour
+* Trying to move my experiments with the web tool via the API
+* The work seems to be in the prompts more than the structure of the code - so, putting out the appropriate prompts and working with those.
+* Trying to get text that isn't trite seems to be much easier with the web UI - this seems much richer
+
 ## 2024-11-14
 * Time: 1 hour, total 14. hours
 * Creating a version of the novel to review
@@ -20,7 +76,7 @@
 ## 2024-11-12
 * Time: 0.25 hour, total 12.75 hours
 * Continuing with the refactoring, trying to complete that. Probably doing too much in one go
-* Fixing refactoring from dividing up the two types of book
+* Fixing refactoring from dividing up the two types of book.
 
 ## 2024-11-11
 * Time: 0.75 hour, total 12.5 hours

@@ -11,7 +11,6 @@ import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.openai.api.ResponseFormat;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import java.util.List;
@@ -45,5 +44,14 @@ public class LlmClient {
         logger.info(response.getMetadata().toString());
         logger.info(response.getResult().toString());
         return outputClass.cast(outputConverter.convert(content));
+    }
+
+    public String generateLlmStringResponse(String fullPrompt) {
+        ChatOptions co = OpenAiChatOptions.builder()
+                .withTemperature(1.1)
+                .build();
+        Prompt prompt = new Prompt(fullPrompt, co);
+        ChatResponse response = aiClient.call(prompt);
+        return response.getResult().getOutput().getContent();
     }
 }
