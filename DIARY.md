@@ -1,9 +1,16 @@
 # Journal
 
 # 2024-11-27
-* 0.25 hours
+* 0.5 hours
 * Had a look through the sample novel, and posted it to github.
 * TODO - Need to get a greater diversity of people speaking.
+  * Have amended the prompt and this looks good
+* TODO - Produce versions of this using some different models to compare
+* TODO - Tidy up the code for sharing
+  * Remove the rave oral history code, but keep the Gatsby one
+* TODO - Produce a copy of Gatsby vs Kong
+* TODO - Write up this experiment
+  * I should justify the argument that there are no unit tests
 
 # 2024-11-26
 * 0.75 hours

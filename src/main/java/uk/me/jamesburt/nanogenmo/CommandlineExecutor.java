@@ -3,8 +3,8 @@ package uk.me.jamesburt.nanogenmo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import uk.me.jamesburt.nanogenmo.textbuilders.BasicBookBuilder;
-import uk.me.jamesburt.nanogenmo.textbuilders.BookBuilder;
+import uk.me.jamesburt.nanogenmo.textbuilders.SimpleBookBuilder;
+import uk.me.jamesburt.nanogenmo.textbuilders.StructuredBookBuilder;
 
 import java.io.IOException;
 
@@ -12,10 +12,10 @@ import java.io.IOException;
 public class CommandlineExecutor  implements CommandLineRunner {
 
     @Autowired
-    BookBuilder bookBuilder;
+    StructuredBookBuilder structuredBookBuilder;
 
     @Autowired
-    BasicBookBuilder basicBuilder;
+    SimpleBookBuilder basicBuilder;
 
     @Override
     public void run(String... args)  {

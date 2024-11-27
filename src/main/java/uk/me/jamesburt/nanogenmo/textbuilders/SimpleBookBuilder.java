@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class BasicBookBuilder {
+public class SimpleBookBuilder {
 
     private static final int NUMBER_OF_CHAPTERS = 20;
     private static final int NUMBER_OF_WORDS = 2500;

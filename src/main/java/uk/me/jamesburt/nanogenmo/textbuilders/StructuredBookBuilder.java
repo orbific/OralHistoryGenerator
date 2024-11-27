@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BookBuilder {
+public abstract class StructuredBookBuilder {
 
-    private static final Logger logger = LoggerFactory.getLogger(BookBuilder.class);
+    private static final Logger logger = LoggerFactory.getLogger(StructuredBookBuilder.class);
 
     @Autowired
     OutputGenerator outputGenerator;
