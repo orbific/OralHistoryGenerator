@@ -1,7 +1,17 @@
 # Journal
 
+# 2024-11-27
+* 0.25 hours
+* Had a look through the sample novel, and posted it to github.
+* TODO - Need to get a greater diversity of people speaking.
+
+# 2024-11-26
+* 0.75 hours
+* Sorting out the code, to make it a little tidier and moving my prompts from Strings into resource files
+* Note on adding a system prompt to the code - which feels like a weird thing that is not needed
+
 # 2024-11-25
-* 30 minutes + countdown
+* 0.75 hours,
 * Trying to move towards completion - moving the prompts for this oral band history into resource files.
 * Also experimenting a little with temperature to see if this produces something better.
   * Setting the temperature to 1.5 produces incoherent text
@@ -36,14 +46,14 @@
   * Upgrading to 4o would be $2.50/1M input and $10/1M outout
 
 # 2024-11-21
-# 45 minutes
+* Time 0.75 hour, total 21 hours
 * Printing the complete text took 45 minutes and 18c
 * It feels like an oral history, but the responses are repeating text.
 * I produced a large version, but there were sections of repeated text. 
   * I made it plain that the text generated should not repeat earlier sections
 
 # 2024-11-20
-* 75 minutes
+* Time 1.25 hour, total 20.25 hours
 * Continuing with working on the prompts - a couple of examples of format seems to help here.
 * I have a half-decent opening text here
 * The band narrative seems to produce something stronger - the LLM can immediately 'see' a narrative
@@ -51,7 +61,7 @@
 * I seem to have the basics for producing the whole novel - going to be interestin to see if this worls
 
 ## 2024-11-19
-* Time 1 hour
+* Time 1 hour, total 19 hours
 * Trying to move my experiments with the web tool via the API
 * The work seems to be in the prompts more than the structure of the code - so, putting out the appropriate prompts and working with those.
 * Trying to get text that isn't trite seems to be much easier with the web UI - this seems much richer
