@@ -7,9 +7,6 @@ import uk.me.jamesburt.nanogenmo.datastructures.ChapterOutput;
 
 import java.util.List;
 
-/**
- * This needs to be an interface with implementations of different output formats
- */
 public class CommandlineOutputGenerator implements OutputGenerator {
 
     private static final Logger logger = LoggerFactory.getLogger(CommandlineOutputGenerator.class);

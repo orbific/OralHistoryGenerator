@@ -4,10 +4,10 @@ import com.itextpdf.html2pdf.HtmlConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import uk.me.jamesburt.nanogenmo.datastructures.BookMetadata;
 import uk.me.jamesburt.nanogenmo.datastructures.ChapterOutput;
 
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 public class PdfOutputGenerator implements OutputGenerator {

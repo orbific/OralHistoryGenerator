@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import uk.me.jamesburt.nanogenmo.LlmClient;
-import uk.me.jamesburt.nanogenmo.Utilities;
+import uk.me.jamesburt.TextUtilities;
 import uk.me.jamesburt.nanogenmo.outputgeneration.PdfOutputGenerator;
 
 import java.io.BufferedWriter;
@@ -53,7 +53,7 @@ public class SimpleBookBuilder {
         String summaryPrompt = "";
 
         for(int currentChapterNumber=1;currentChapterNumber<=NUMBER_OF_CHAPTERS;currentChapterNumber++) {
-            String chapterNumberInWords = Utilities.convertIntToWords(currentChapterNumber);
+            String chapterNumberInWords = TextUtilities.convertIntToWords(currentChapterNumber);
 
             // Generate chapter structure
             String chapterStructure = chapterStructurePromptText.getContentAsString(Charset.defaultCharset());
@@ -95,7 +95,7 @@ public class SimpleBookBuilder {
                     +chapterContributorsResponse;
 
             StringBuilder chapterText = new StringBuilder();
-            while(Utilities.getWordCount(chapterText.toString())<NUMBER_OF_WORDS) {
+            while(TextUtilities.getWordCount(chapterText.toString())<NUMBER_OF_WORDS) {
 
                 // Generate oral history structure
                 String oralHistorySection = oralHistoryPromptText.getContentAsString(Charset.defaultCharset());
@@ -107,7 +107,7 @@ public class SimpleBookBuilder {
                 chapterText.append(chapterTextResponse.replace("```html","").replace("```",""));
             }
 
-            System.out.println("\n\n--------Full chapter "+chapterNumberInWords+" text is "+Utilities.getWordCount(chapterText.toString())+" words -----\n\n");
+            System.out.println("\n\n--------Full chapter "+chapterNumberInWords+" text is "+ TextUtilities.getWordCount(chapterText.toString())+" words -----\n\n");
             System.out.println(chapterText);
 
             bookText.append(chapterText);

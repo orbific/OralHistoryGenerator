@@ -1,6 +1,6 @@
 package uk.me.jamesburt.nanogenmo.datastructures;
 
-import uk.me.jamesburt.nanogenmo.Utilities;
+import uk.me.jamesburt.TextUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class ChapterOutput {
     public int getWordCount() {
         int wordCount = 0;
         for(String output: bodyText) {
-            wordCount += Utilities.getWordCount(output);
+            wordCount += TextUtilities.getWordCount(output);
         }
         return wordCount;
     }

@@ -1,5 +1,10 @@
 # Journal
 
+# 2024-11-28
+* Love seeing this text - it's amazing that something as coherent is produced by a model
+* BUT - inconsistencies in the chapter headings.
+* It loves nicknames appearing in the character names.
+
 # 2024-11-27
 * 0.5 hours
 * Had a look through the sample novel, and posted it to github.
