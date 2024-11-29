@@ -3,6 +3,7 @@ package uk.me.jamesburt.nanogenmo.textbuilders.simplenovel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 import uk.me.jamesburt.nanogenmo.LlmClient;
 import uk.me.jamesburt.nanogenmo.datastructures.CastMetadata;
 import uk.me.jamesburt.nanogenmo.datastructures.ChapterMetadata;
@@ -12,6 +13,7 @@ import uk.me.jamesburt.nanogenmo.datastructures.CharacterMetadata;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class ChapterBuilder {
 
     @Autowired

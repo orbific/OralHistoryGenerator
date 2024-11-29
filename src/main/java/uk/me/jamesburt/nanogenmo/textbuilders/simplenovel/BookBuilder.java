@@ -3,9 +3,11 @@ package uk.me.jamesburt.nanogenmo.textbuilders.simplenovel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 import uk.me.jamesburt.nanogenmo.datastructures.*;
 import uk.me.jamesburt.nanogenmo.textbuilders.StructuredBookBuilder;
 
+@Component
 public class BookBuilder extends StructuredBookBuilder {
     @Value("classpath:/prompts/simplenovel/generate-novel-synopsis.st")
     private Resource generateNovelOverview;

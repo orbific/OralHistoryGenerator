@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import uk.me.jamesburt.nanogenmo.textbuilders.SimpleBookBuilder;
-import uk.me.jamesburt.nanogenmo.textbuilders.StructuredBookBuilder;
+import uk.me.jamesburt.nanogenmo.textbuilders.simplenovel.BookBuilder;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import java.io.IOException;
 public class CommandlineExecutor  implements CommandLineRunner {
 
     @Autowired
-    StructuredBookBuilder structuredBookBuilder;
+    BookBuilder structuredBookBuilder;
 
     @Autowired
     SimpleBookBuilder basicBuilder;
@@ -20,7 +20,11 @@ public class CommandlineExecutor  implements CommandLineRunner {
     @Override
     public void run(String... args)  {
         try {
-            basicBuilder.generateBook();
+            if(args.length==0 || ! "gatsby".equals(args[0])) {
+                basicBuilder.generateBook();
+            } else {
+                structuredBookBuilder.generateBook();
+            }
 
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
